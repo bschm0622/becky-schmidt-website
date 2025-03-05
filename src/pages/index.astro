@@ -1,25 +1,38 @@
 ---
-import '../styles/global.css';
 // Component Imports
-import Button from '../components/Button.astro';
+import Hero from '@/components/hero.astro';
+import MainLayout from '@/layouts/main.astro';
 
 // Full Astro Component Syntax:
 // https://docs.astro.build/basics/astro-components/
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro + TailwindCSS</title>
-	</head>
-
-	<body>
-		<div class="grid place-items-center h-screen content-center">
-			<Button>Tailwind Button in Astro!</Button>
-			<a href="/markdown-page" class="p-4 underline">Markdown is also supported...</a>
+<MainLayout title="Astro + TailwindCSS">
+	<div id="top">
+		<Hero />
+	</div>
+	<section id="about" class="min-h-screen py-20">
+		<div class="container mx-auto">
+			<h2 class="text-3xl font-bold">About</h2>
+			<!-- About content -->
 		</div>
-	</body>
-</html>
+	</section>
+	<section id="projects" class="min-h-screen py-20">
+		<div class="container mx-auto">
+			<h2 class="text-3xl font-bold">Projects</h2>
+			<!-- Projects content -->
+		</div>
+	</section>
+	<section id="resume" class="min-h-screen py-20">
+		<div class="container mx-auto">
+			<h2 class="text-3xl font-bold">Resume</h2>
+			<!-- Resume content -->
+		</div>
+	</section>
+	<section id="contact" class="min-h-screen py-20">
+		<div class="container mx-auto">
+			<h2 class="text-3xl font-bold">Contact</h2>
+			<!-- Contact content -->
+		</div>
+	</section>
+</MainLayout>

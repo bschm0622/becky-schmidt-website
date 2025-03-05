@@ -1,16 +1,18 @@
 ---
 import '../styles/global.css';
-const { content } = Astro.props;
+import { FloatingNavbar } from '@/components/ui/navbar';
+const { content, title = content?.title || 'My Website' } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="en" class="light">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{content.title}</title>
+		<title>{title}</title>
 	</head>
-	<body>
+	<body class="bg-background text-foreground">
+		<FloatingNavbar client:load />
 		<slot />
 	</body>
 </html>

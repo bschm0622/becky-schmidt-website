@@ -1,1 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  html {
+    font-family: system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  :root {
+    /* Primary Brand Colors */
+    --primary: #CFDBD5; /* Muted Green-Gray */
+    --primary-foreground: #242423; /* Dark text for contrast */
+
+    /* Secondary Colors */
+    --secondary: #E8EDDF; /* Soft Off-White */
+    --secondary-foreground: #333533; /* Darker contrast text */
+
+    /* Accent Colors - Using a darker shade for better visibility */
+    --accent: #7D8C85; /* Darker version of primary for accent */
+    --accent-foreground: #FFFFFF;
+
+    /* Muted Colors */
+    --muted: #E8EDDF;
+    --muted-foreground: #6C6C6C; /* Medium gray for muted text */
+
+    /* Background Colors */
+    --background: #FFFFFF; /* Pure white background */
+    --foreground: #242423; /* Dark neutral text */
+
+    /* Border & Separator Colors */
+    --border: #D9E2DC; /* Lighter version of primary */
+    --separator: #BFC9C2; /* Medium version of primary */
+
+    /* Special UI Colors */
+    --card: #F5F7F2; /* Very light background */
+    --card-foreground: #333533;
+    --popover: #FFFFFF;
+    --popover-foreground: #242423;
+
+    /* Input Fields */
+    --input: #EAEFEA;
+    --input-foreground: #333533;
+
+    /* Ring (focus outline) */
+    --ring: #7D8C85; /* Darker version of primary */
+    
+    /* Destructive color */
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+  }
+  
+  .dark {
+    --background: #242423; /* Dark gray */
+    --foreground: #F5F7F2; /* Off-white text */
+
+    --primary: #CFDBD5; /* Keep the brand color */
+    --primary-foreground: #242423; /* Dark text on light primary */
+
+    --secondary: #333533; /* Darker background */
+    --secondary-foreground: #F5F7F2; /* Light text */
+
+    --accent: #7D8C85; /* Darker version of primary */
+    --accent-foreground: #FFFFFF;
+
+    --muted: #333533;
+    --muted-foreground: #ADBAB3; /* Lighter version of primary */
+
+    --border: #4A4A49;
+    --separator: #5C5C5B;
+    --card: #333533;
+    --card-foreground: #F5F7F2;
+    --popover: #333533;
+    --popover-foreground: #F5F7F2;
+    --input: #3D3D3C;
+    --input-foreground: #F5F7F2;
+    --ring: #7D8C85;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+  }
+  
+  * {
+    @apply border-border outline-none;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
