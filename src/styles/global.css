@@ -1,10 +1,15 @@
+/* Tailwind directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import 'tailwindcss';
-
-@plugin 'tailwindcss-animate';
+/* Use @apply for the tailwindcss-animate plugin instead of @plugin */
+@layer utilities {
+  .animate-fade {
+    @apply transition-opacity;
+  }
+  /* Add other animation utilities as needed */
+}
 
 @custom-variant dark (&:is(.dark *));
 
