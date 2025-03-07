@@ -14,6 +14,7 @@ const navItems: NavItem[] = [
   { label: "about", href: "#about" },
   { label: "projects", href: "#projects" },
   { label: "resume", href: "#resume" },
+  { label: "favorites", href: "#favorites" },
   { label: "connect", href: "#connect" },
 ];
 
@@ -133,7 +134,7 @@ export function FloatingNavbar() {
     </button>
   );
 
-  // Desktop navigation
+  // Desktop navigation with adjusted spacing
   const DesktopNav = () => (
     <ul className="hidden md:flex items-center space-x-1 mx-auto">
       {navItems.map((item) => (
@@ -141,7 +142,7 @@ export function FloatingNavbar() {
           <button
             onClick={() => scrollToSection(item.href)}
             className={cn(
-              "relative px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 flex items-center justify-center",
+              "relative px-3 py-2 text-sm font-medium rounded-full transition-colors duration-200 flex items-center justify-center",
               activeItem === item.href
                 ? "text-primary-foreground"
                 : "text-muted-foreground hover:text-foreground"
@@ -207,7 +208,7 @@ export function FloatingNavbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, type: "spring" }}
         className={cn(
-          "flex items-center w-full max-w-md px-3 py-1.5 rounded-full bg-background/80 backdrop-blur-md pointer-events-auto",
+          "flex items-center w-auto px-4 py-1.5 rounded-full bg-background/80 backdrop-blur-md pointer-events-auto",
           "border border-border transition-all duration-300 relative",
           scrolled ? "shadow-sm" : ""
         )}
