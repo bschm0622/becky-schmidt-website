@@ -1,11 +1,70 @@
 ---
-import { Button } from '@/components/ui/button';
 ---
 
-<div class="flex flex-col items-center justify-center h-screen">
-  <h1 class="text-4xl font-bold text-primary-foreground">Hello World</h1>
-  <p class="text-lg mt-2 text-foreground">This is a test of the color system</p>
-  <div class="mt-4">
-    <Button variant="default">Primary Button</Button>
-  </div>
+<div class="max-w-md mx-auto px-4 text-lg text-primary-foreground">
+    <section
+        class="flex flex-col items-center justify-center text-center pt-40"
+    >
+        <h1 class="text-4xl font-bold text-primary-foreground">
+            hi, I'm Becky 👋
+        </h1>
+        <p class="text-lg text-primary-foreground mt-3">
+            I'm <span id="typed-text"></span>
+        </p>
+    </section>
+
+    <section class="flex flex-col items-center justify-center text-center mt-3">
+        <p class="text-lg text-primary-foreground">
+            Creating and launching things that matter.
+        </p>
+    </section>
 </div>
+
+<style>
+    .typewriter-cursor {
+        display: inline-block;
+        margin-left: 2px;
+        animation: blink 0.7s infinite;
+    }
+
+    @keyframes blink {
+        0% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+</style>
+
+<script>
+    import EmojiTypewriter from "../lib/emoji-typewriter.js";
+
+    // Initialize the typewriter when the DOM is loaded
+    document.addEventListener("DOMContentLoaded", () => {
+        const element = document.getElementById("typed-text");
+
+        if (element) {
+            const typewriter = new EmojiTypewriter({
+                words: [
+                    "a curious creator ⚡",
+                    "a product architect 📐",
+                    "a relentless problem solver 🔍",
+                    "a systems thinker 🔄",
+                ],
+                typeSpeed: 50,
+                deleteSpeed: 30,
+                delaySpeed: 2500,
+                loop: true,
+                cursor: true,
+                cursorChar: "|",
+                cursorBlinkSpeed: 700,
+            });
+
+            typewriter.init(element);
+        }
+    });
+</script>
