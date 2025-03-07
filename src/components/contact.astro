@@ -1,8 +1,22 @@
 ---
 import { Button } from "@/components/ui/button";
-import { Github, Linkedin } from "lucide-react";
+import { Linkedin, Github, Mail } from "lucide-react";
 ---
 
+<div id="connect" class="mx-auto px-0 text-lg text-primary-foreground">
+    <section
+        class="max-w-screen-md mx-auto px-4 flex flex-col items-center justify-center max-w-screen-md"
+    >
+        <h1 class="text-4xl font-bold text-primary-foreground mb-6 text-center">
+            connect with me
+        </h1>
+        <p class="text-lg text-primary-foreground mt-3">
+            I'm always looking to connect with like-minded individuals. Please
+            reach out to me via any of the following channels. I'm looking
+            forward to hearing from you!
+        </p>
+    </section>
+</div>
 <div class="flex flex-row items-center justify-center gap-4 mt-6">
     <a
         href="https://www.linkedin.com/in/becky--schmidt/"
@@ -59,6 +73,15 @@ import { Github, Linkedin } from "lucide-react";
                     d="M9,22 C9,22 9,22 9,22 L42,22 C42,22 42,22 42,22 L42,41 C42,42.1 41.2,42.7 40.2,42.2 L26,33 L11.8,42.2 C10.8,42.7 9,42.1 9,41 L9,22 Z"
                     stroke-width="3.5"></path>
             </svg>
+        </Button>
+    </a>
+    <a
+        href="mailto:beckyschmidt0622@gmail.com"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        <Button variant="email">
+            <Mail />
         </Button>
     </a>
 </div>

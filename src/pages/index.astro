@@ -5,25 +5,25 @@ import About from '@/components/about.astro';
 import MainLayout from '@/layouts/main.astro';
 import Projects from '@/components/projects.astro';
 import Resume from '@/components/resume.astro';
+import Contact from '@/components/contact.astro';
+import Footer from '@/components/footer.astro';
 ---
 
 <MainLayout title="Becky's Portfolio">
-	<div id="top" class="mb-0">
+	<div id="top" class="mb-0 pb-20">
 		<Hero />
 	</div>
-	<section id="about-section" class="py-20">
+	<section id="about-section" class="pb-20">
 		<About />
 	</section>
-	<section id="projects-section" class="py-20">
+	<section id="projects-section" class="pb-20">
 		<Projects />
 	</section>
-	<section id="resume-section" class="py-20">
+	<section id="resume-section" class="pb-20">
 		<Resume />
 	</section>
-	<section id="contact-section" class="py-20">
-		<div class="container mx-auto">
-			<h2 class="text-3xl font-bold">Contact</h2>
-			<!-- Contact content -->
-		</div>
+	<section id="contact-section" class="pb-20">
+		<Contact />
 	</section>
+	<Footer />
 </MainLayout>

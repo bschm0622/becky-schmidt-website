@@ -10,11 +10,11 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: "Home", href: "#top" },
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Resume", href: "#resume" },
-  { label: "Contact", href: "#contact" },
+  { label: "home", href: "#top" },
+  { label: "about", href: "#about" },
+  { label: "projects", href: "#projects" },
+  { label: "resume", href: "#resume" },
+  { label: "connect", href: "#connect" },
 ];
 
 export function FloatingNavbar() {
