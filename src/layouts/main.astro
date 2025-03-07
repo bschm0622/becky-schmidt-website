@@ -1,7 +1,7 @@
 ---
-import '../styles/global.css';
-import { FloatingNavbar } from '@/components/ui/navbar';
-const { content, title = content?.title || 'My Website' } = Astro.props;
+import "../styles/global.css";
+import { FloatingNavbar } from "@/components/ui/navbar";
+const { content, title = content?.title || "My Website" } = Astro.props;
 ---
 
 <html lang="en" class="light">
@@ -10,6 +10,10 @@ const { content, title = content?.title || 'My Website' } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<title>{title}</title>
+		<link
+			rel="icon"
+			href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👋</text></svg>"
+		/>
 	</head>
 	<body class="bg-background text-foreground">
 		<FloatingNavbar client:load />
