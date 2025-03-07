@@ -1,3 +1,7 @@
+---
+import { Button } from "@/components/ui/button";
+---
+
 <div class="max-w-md mx-auto px-4 text-lg text-primary-foreground">
     <section
         class="flex flex-col items-center justify-center text-center pt-40"
@@ -14,8 +18,20 @@
         <p class="text-lg text-primary-foreground">
             Creating and launching things that matter.
         </p>
+        <div class="flex flex-row items-center justify-center gap-4 mt-6">
+            <Button variant="linkedin">
+                LinkedIn
+            </Button>
+            <Button variant="github">
+                GitHub
+            </Button>
+            <Button variant="substack">
+                Substack
+            </Button>
+        </div>
     </section>
 </div>
+
 <style>
     .typewriter-cursor {
         display: inline-block;
