@@ -1,0 +1,64 @@
+---
+import { ProjectCard } from "@/components/ui/project-card";
+---
+
+<div id="projects" class="mx-auto px-0 text-lg text-primary-foreground">
+    <section class="flex flex-col items-center justify-center">
+        <h1 class="text-4xl font-bold text-primary-foreground mb-6 text-center">
+            Projects
+        </h1>
+        <div
+            class="max-w-screen-md mx-auto p-4 w-full grid gap-6 md:grid-cols-2"
+        >
+            <ProjectCard
+                client:load
+                title="bibleplan.app"
+                description="A Bible reading plan generator that allows for complete flexibility in what you read and when. I've implemented user auth, database support, and real-time plan tracking."
+                logoSrc="/images/logos/bibleplan-logo.png"
+                techStack="Next.js, DaisyUI, Supabase, Cursor"
+                projectUrl="https://bibleplan.app?ref=becky-personal-website"
+            />
+
+            <ProjectCard
+                client:load
+                title="Wellspring Archive - Website"
+                description="A directory website to share Christian resources. Created using programmatically generated pages. I've also created an admin dashboard to help me easily add new listings."
+                logoSrc="/images/logos/wellspring-logo.png"
+                techStack="Next.js, Shadcn/UI, Supabase, Cursor, Wisp CMS"
+                projectUrl="https://wellspringarchive.com?ref=becky-personal-website"
+            />
+
+            <ProjectCard
+                client:load
+                title="Wellspring Archive - Substack"
+                description="I write about the intersections of faith and technology on Substack. I'm using Substack as a launchpad for the Wellspring Archive website."
+                logoSrc="/images/logos/wellspring-logo.png"
+                techStack="Substack"
+                projectUrl="https://wellspringarchive.substack.com?ref=becky-personal-website"
+            />
+
+            <ProjectCard
+                client:load
+                title="Octane11 - AI Assistant"
+                description="I am the product owner for Octane11's AI chatbot. I manage the dev team and created the prompts powering the chatbot."
+                logoSrc="/images/logos/octane11-logo.png"
+                techStack="Google BigQuery, Google Gemini, Google Vertex AI"
+            />
+
+            <ProjectCard
+                client:load
+                title="Octane11 - Data Normalization"
+                description="I am the product owner for Octane11's proprietary data normalization business logic. I translate business requirements into technical specifications for the dev team, prototype logic in SQL, and perform extensive QA."
+                logoSrc="/path/to/octane11-logo.png"
+                techStack="SQL, Google BigQuery, Looker Studio, YouTrack"
+            />
+            <ProjectCard
+                client:load
+                title="Octane11 - User Tools"
+                description="I am the product owner for many of Octane11's user tools. I prototype the UI/UX, write the product requirement documents, assist the dev team, and perform extensive QA."
+                logoSrc="/images/logos/octane11-logo.png"
+                techStack="Figma, YouTrack"
+            />
+        </div>
+    </section>
+</div>

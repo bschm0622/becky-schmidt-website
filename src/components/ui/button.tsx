@@ -19,9 +19,9 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        github: "border border-input bg-background shadow-xs hover:bg-muted hover:text-primary-foreground",
-        linkedin: "border border-input bg-background shadow-xs hover:bg-muted hover:text-primary-foreground",
-        substack: "border border-input bg-background shadow-xs hover:bg-muted hover:text-primary-foreground",
+        github: "border-2 border-[#24292e] text-[#24292e] bg-background hover:bg-[#24292e]/10 hover:text-[#24292e]",
+        linkedin: "border-2 border-[#0077b5] text-[#0077b5] bg-background hover:bg-[#0077b5]/10 hover:text-[#0077b5]",
+        substack: "border-2 border-[#FF6719] text-[#FF6719] bg-background hover:bg-[#FF6719]/10 hover:text-[#FF6719]",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
