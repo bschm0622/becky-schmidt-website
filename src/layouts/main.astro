@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
 import { FloatingNavbar } from "@/components/ui/navbar";
-const { content, title = content?.title || "My Website" } = Astro.props;
+const { content, title = content?.title || "Becky's Portfolio", description = "Personal portfolio showcasing my projects, skills, and experience in web development" } = Astro.props;
 ---
 
 <html lang="en" class="light">
@@ -10,6 +10,25 @@ const { content, title = content?.title || "My Website" } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="author" content="Becky" />
+		
+		<!-- Open Graph / Social Media Meta Tags -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url.href} />
+		<!-- Add an og:image if you have a social preview image -->
+		<!-- <meta property="og:image" content="https://yoursite.com/social-preview.jpg" /> -->
+		
+		<!-- Twitter Card data -->
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		
+		<!-- Canonical URL to prevent duplicate content issues -->
+		<link rel="canonical" href={Astro.url.href} />
+		
 		<link
 			rel="icon"
 			href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👋</text></svg>"

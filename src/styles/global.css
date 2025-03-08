@@ -65,6 +65,10 @@
     --destructive: #ef4444;
     --destructive-foreground: #ffffff;
 
+    /* Link colors */
+    --link: #7D8C85; /* Using accent color for links */
+    --link-hover: #5A6A63; /* Darker version for hover */
+
     /* Add font family variables */
     --font-sans: 'Poppins', system-ui, sans-serif;
   }
@@ -96,6 +100,10 @@
     --ring: #7D8C85;
     --destructive: #ef4444;
     --destructive-foreground: #ffffff;
+    
+    /* Link colors for dark mode */
+    --link: #ADBAB3; /* Lighter version of accent for dark mode */
+    --link-hover: #CFDBD5; /* Even lighter on hover */
   }
   
   * {
@@ -103,5 +111,18 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Add link styles */
+  a {
+    color: var(--link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+  
+  a:hover {
+    color: var(--link-hover);
   }
 }
