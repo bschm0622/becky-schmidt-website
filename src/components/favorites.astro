@@ -1,7 +1,181 @@
-<div id="favorites" class="mx-auto px-0 text-lg text-primary-foreground">
+<div id="favorites" class="mx-auto px-4 sm:px-0 text-lg text-primary-foreground">
     <section class="flex flex-col items-center justify-center">
         <h1 class="text-4xl font-bold text-primary-foreground mb-6 text-center">
             favorites
         </h1>
+
+        <div class="w-full max-w-4xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <!-- Podcasts -->
+                <div class="favorites-category">
+                    <h2
+                        class="text-2xl font-semibold mb-3 border-b border-primary/30 pb-2"
+                    >
+                        podcasts
+                    </h2>
+                    <ul class="space-y-3">
+                        <li class="favorite-item">
+                            <a href="https://99percentinvisible.org/" target="_blank" rel="noopener noreferrer" class="block">
+                                <span class="font-medium link-title">99% Invisible</span>
+                                <p class="text-sm opacity-80 mt-1">
+                                    because Roman Mars could narrate paint drying
+                                    and I'd be fascinated
+                                </p>
+                            </a>
+                        </li>
+                        <li class="favorite-item">
+                            <a href="https://gimletmedia.com/shows/reply-all" target="_blank" rel="noopener noreferrer" class="block">
+                                <span class="font-medium link-title">Reply All</span>
+                                <p class="text-sm opacity-80 mt-1">
+                                    for making me care about internet mysteries I
+                                    never knew existed
+                                </p>
+                            </a>
+                        </li>
+                        <!-- Add more podcasts as needed -->
+                    </ul>
+                </div>
+
+                <!-- YouTube -->
+                <div class="favorites-category">
+                    <h2
+                        class="text-2xl font-semibold mb-3 border-b border-primary/30 pb-2"
+                    >
+                        youtube
+                    </h2>
+                    <ul class="space-y-3">
+                        <li class="favorite-item">
+                            <a href="https://www.youtube.com/c/kurzgesagt" target="_blank" rel="noopener noreferrer" class="block">
+                                <span class="font-medium link-title">Kurzgesagt</span>
+                                <p class="text-sm opacity-80 mt-1">
+                                    existential dread has never looked so colorful
+                                </p>
+                            </a>
+                        </li>
+                        <li class="favorite-item">
+                            <a href="https://www.youtube.com/c/veritasium" target="_blank" rel="noopener noreferrer" class="block">
+                                <span class="font-medium link-title">Veritasium</span>
+                                <p class="text-sm opacity-80 mt-1">
+                                    for making me question everything I thought I
+                                    knew about physics
+                                </p>
+                            </a>
+                        </li>
+                        <!-- Add more YouTube channels as needed -->
+                    </ul>
+                </div>
+
+                <!-- Articles -->
+                <div class="favorites-category">
+                    <h2
+                        class="text-2xl font-semibold mb-3 border-b border-primary/30 pb-2"
+                    >
+                        articles
+                    </h2>
+                    <ul class="space-y-3">
+                        <li class="favorite-item">
+                            <a href="http://www.galactanet.com/oneoff/theegg_mod.html" target="_blank" rel="noopener noreferrer" class="block">
+                                <span class="font-medium link-title">"The Egg" by Andy Weir</span>
+                                <p class="text-sm opacity-80 mt-1">
+                                    shortest story that ever blew my mind
+                                </p>
+                            </a>
+                        </li>
+                        <li class="favorite-item">
+                            <a href="https://www.youtube.com/watch?v=ob_GX50Za6c" target="_blank" rel="noopener noreferrer" class="block">
+                                <span class="font-medium link-title">"Bicycle of the Mind" by Steve Jobs</span>
+                                <p class="text-sm opacity-80 mt-1">
+                                    changed how I think about technology as a tool
+                                </p>
+                            </a>
+                        </li>
+                        <!-- Add more articles as needed -->
+                    </ul>
+                </div>
+
+                <!-- Books -->
+                <div class="favorites-category">
+                    <h2
+                        class="text-2xl font-semibold mb-3 border-b border-primary/30 pb-2"
+                    >
+                        books
+                    </h2>
+                    <ul class="space-y-3">
+                        <li class="favorite-item">
+                            <a href="https://www.ynharari.com/book/sapiens-2/" target="_blank" rel="noopener noreferrer" class="block">
+                                <span class="font-medium link-title">"Sapiens" by Yuval Noah Harari</span>
+                                <p class="text-sm opacity-80 mt-1">
+                                    made me rethink what it means to be human
+                                </p>
+                            </a>
+                        </li>
+                        <li class="favorite-item">
+                            <a href="https://www.nngroup.com/books/design-everyday-things-revised/" target="_blank" rel="noopener noreferrer" class="block">
+                                <span class="font-medium link-title">"The Design of Everyday Things"</span>
+                                <p class="text-sm opacity-80 mt-1">
+                                    now I can't stop noticing bad door designs
+                                </p>
+                            </a>
+                        </li>
+                        <!-- Add more books as needed -->
+                    </ul>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
+
+<style>
+    .favorite-item {
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .favorite-item:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        transform: translateX(4px);
+    }
+    
+    .favorite-item a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+    
+    .link-title {
+        color: #60a5fa; /* A nice blue color for links */
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+        transition: color 0.2s ease;
+        font-size: 1.05rem;
+    }
+    
+    .favorite-item:hover .link-title {
+        color: #93c5fd; /* Lighter blue on hover */
+    }
+    
+    @media (max-width: 640px) {
+        .favorite-item {
+            padding: 0.5rem 0.375rem;
+        }
+        
+        .favorites-category h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .link-title {
+            font-size: 1rem;
+        }
+        
+        ul.space-y-3 {
+            margin-top: 0.5rem;
+        }
+        
+        .favorites-category {
+            margin-bottom: 1.5rem;
+        }
+    }
+</style>
