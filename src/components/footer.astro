@@ -3,9 +3,25 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer class="mx-auto py-6 mt-12 border-t border-border bg-background">
-    <div class="flex justify-center">
+    <div class="flex flex-col items-center justify-center gap-2">
         <div class="text-sm text-muted-foreground">
             © {currentYear} • All rights reserved
+        </div>
+        <div class="flex items-center text-xs text-muted-foreground gap-1.5">
+            Made with 
+            <a 
+                href="https://astro.build" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+            >
+                <img 
+                    src="/images/logos/astro-icon-dark.svg" 
+                    alt="Astro Logo" 
+                    class="w-4 h-5"
+                />
+                Astro
+            </a>
         </div>
     </div>
 </footer>
