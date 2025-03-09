@@ -14,7 +14,7 @@ const navItems: NavItem[] = [
   { label: "about", href: "#about" },
   { label: "projects", href: "#projects" },
   { label: "resume", href: "#resume" },
-  { label: "favorites", href: "#favorites" },
+  { label: "thoughts", href: "#thoughts" },
   { label: "connect", href: "#connect" },
 ];
 
@@ -23,6 +23,46 @@ export function FloatingNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Check URL hash on initial load and handle navigation
+  useEffect(() => {
+    const handleInitialHash = () => {
+      // Get the hash from the URL
+      const hash = window.location.hash;
+      
+      if (hash && hash.length > 1) {
+        // Set the active item based on the hash
+        setActiveItem(hash);
+        
+        // Wait a moment for the page to fully load
+        setTimeout(() => {
+          // Find the element with this ID
+          const element = document.querySelector(hash);
+          if (element) {
+            setIsScrolling(true);
+            
+            // Calculate position to scroll to (accounting for navbar)
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - 100;
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth"
+            });
+            
+            // Reset isScrolling after animation completes
+            setTimeout(() => setIsScrolling(false), 1000);
+          }
+        }, 100);
+      }
+    };
+    
+    handleInitialHash();
+    
+    // Also handle hash changes while on the page
+    window.addEventListener('hashchange', handleInitialHash);
+    return () => window.removeEventListener('hashchange', handleInitialHash);
+  }, []);
 
   // Handle scroll to update active section and navbar appearance
   useEffect(() => {
@@ -79,6 +119,10 @@ export function FloatingNavbar() {
     setIsScrolling(true);
     setActiveItem(href);
     setMobileMenuOpen(false); // Close mobile menu when navigating
+    
+    // Update the URL hash without causing a page jump
+    // This replaces the current history state instead of adding a new one
+    window.history.replaceState(null, '', href);
     
     // Special case for top of page
     if (href === "#top") {

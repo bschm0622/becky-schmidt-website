@@ -8,26 +8,33 @@ import Resume from '@/components/resume.astro';
 import Contact from '@/components/contact.astro';
 import Footer from '@/components/footer.astro';
 import Favorites from '@/components/favorites.astro';
+import Blog from '@/components/blog.astro';
+
+// SEO metadata
+const title = "Becky's Portfolio | Product Manager";
+const description = "Hi, I'm Becky. I'm a product manager and a curious creator. Explore my projects, skills, and experience.";
 ---
 
-<MainLayout title="Becky's Portfolio">
-	<div id="top" class="mb-0 pb-20">
-		<Hero />
-	</div>
-	<section id="about-section" class="pb-20">
-		<About />
-	</section>
-	<section id="projects-section" class="pb-20">
-		<Projects />
-	</section>
-	<section id="resume-section" class="pb-20">
-		<Resume />
-	</section>
-	<section id="favorites-section" class="pb-20">
-		<Favorites />
-	</section>
-	<section id="contact-section" class="pb-20">
-		<Contact />
-	</section>
+<MainLayout title={title} description={description}>
+	<main>
+		<div id="top" class="mb-0 pb-20">
+			<Hero />
+		</div>
+		<section id="about-section" class="pb-20">
+			<About />
+		</section>
+		<section id="projects-section" class="pb-20">
+			<Projects />
+		</section>
+		<section id="resume-section" class="pb-20">
+			<Resume />
+		</section>
+		<section id="thoughts-section" class="pb-20">
+			<Blog />
+		</section>
+		<section id="contact-section" class="pb-20">
+			<Contact />
+		</section>
+	</main>
 	<Footer />
 </MainLayout>

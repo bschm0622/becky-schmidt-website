@@ -1,5 +1,71 @@
 ---
-import { ResumeCard } from "@/components/ui/resume-card";
+import HorizontalTimeline from "@/components/ui/resume-timeline";
+
+const timelineEvents = [
+  {
+    id: "1",
+    company: "Octane11",
+    title: "Sr. Manager, Business Intelligence",
+    duration: "May 2022 - Present",
+    summary: "Leading development of AI-powered solutions and data normalization processes to improve data quality.",
+    details: [
+      "Led development of AI-powered chatbot assistant, managing the entire product lifecycle from conception to launch",
+      "Designed and implemented data normalization processes that improved data quality by 35%",
+      "Managed cross-functional teams to deliver projects on time and within budget"
+    ],
+    type: "work"
+  },
+  {
+    id: "2",
+    company: "Octane11",
+    title: "Martech Operations Associate",
+    duration: "August 2021 - May 2022",
+    summary: "Created user-facing tools and translated business requirements into technical specifications.",
+    details: [
+      "Created user-facing tools that increased client satisfaction scores by 25%",
+      "Collaborated with engineering team to translate business requirements into technical specifications"
+    ],
+    type: "work"
+  },
+  {
+    id: "3",
+    company: "Financial Center First Credit Union",
+    title: "Business Analyst",
+    duration: "August 2019 - August 2021",
+    summary: "Developed SQL queries and Tableau dashboards to support marketing segmentation and reporting.",
+    details: [
+      "Developed and maintained SQL queries to support marketing segmentation and reporting",
+      "Created Tableau dashboards to visualize marketing campaign performance and customer behavior",
+      "Utilized Python for data cleaning and preparation, improving data quality for analysis"
+    ],
+    type: "work"
+  },
+  {
+    id: "4",
+    company: "Loyalty Research Center",
+    title: "Program Manager",
+    duration: "June 2018 - August 2019",
+    summary: "Managed client relationships and developed data-driven insights using various analytical tools.",
+    details: [
+      "Developed and maintained SQL queries to support marketing segmentation and reporting",
+      "Created Tableau dashboards to visualize marketing campaign performance and customer behavior",
+      "Utilized Python for data cleaning and preparation, improving data quality for analysis"
+    ],
+    type: "work"
+  },
+  {
+    id: "5",
+    company: "Ball State University",
+    title: "Bachelor of Science in Marketing",
+    duration: "2014 - 2018",
+    summary: "Miller College of Business graduate with a minor in Professional Writing and Emerging Media",
+    details: [
+      "Miller College of Business Honors program participant",
+      "Miller Scholars recipient (full tuition scholarship and direct admission to the Honors Program)"
+    ],
+    type: "education"
+  }
+];
 ---
 
 <div id="resume" class="mx-auto px-0 text-lg text-primary-foreground">
@@ -7,59 +73,13 @@ import { ResumeCard } from "@/components/ui/resume-card";
         <h1 class="text-4xl font-bold text-primary-foreground mb-6 text-center">
             resume
         </h1>
-        <div class="max-w-screen-md mx-auto p-4 w-full">
-            <div class="mb-5">
-                <ResumeCard
-                    client:load
-                    title="Senior Manager, Business Intelligence"
-                    company="Octane11"
-                    duration="May 2022 - Present"
-                    skills="Product Management, Agile Methodology, Data Analysis, Data Visualization"
-                    bullets={[
-                        "Led development of AI-powered chatbot assistant, managing the entire product lifecycle from conception to launch",
-                        "Designed and implemented data normalization processes that improved data quality by 35%",
-                    ]}
-                    promotions={[
-                        {
-                            title: "Martech Operations Associate",
-                            duration: "August 2021 - May 2022",
-                            bullets: [
-                                "Created user-facing tools that increased client satisfaction scores by 25%",
-                                "Collaborated with engineering team to translate business requirements into technical specifications",
-                            ],
-                        },
-                    ]}
-                />
-            </div>
-
-            <div class="mb-5">
-                <ResumeCard
-                    client:load
-                    title="Marketing Segmentation and Business Analyst"
-                    company="Financial Center First Credit Union"
-                    duration="August 2019 - August 2021"
-                    skills="SQL, Tableau, Python, Data Analysis, Data Visualization"
-                    bullets={[
-                        "Developed and maintained SQL queries to support marketing segmentation and reporting",
-                        "Created Tableau dashboards to visualize marketing campaign performance and customer behavior",
-                        "Utilized Python for data cleaning and preparation, improving data quality for analysis",
-                    ]}
-                />
-            </div>
-            <div>
-                <ResumeCard
-                    client:load
-                    title="Program Manager"
-                    company="Loyalty Research Center"
-                    duration="June 2018 - August 2019"
-                    skills="Microsoft Excel, IBM SPSS, Client Presentation, Qualtrics"
-                    bullets={[
-                        "Developed and maintained SQL queries to support marketing segmentation and reporting",
-                        "Created Tableau dashboards to visualize marketing campaign performance and customer behavior",
-                        "Utilized Python for data cleaning and preparation, improving data quality for analysis",
-                    ]}
-                />
-            </div>
+        
+        <div class="w-full max-w-screen-lg mx-auto">
+            <HorizontalTimeline 
+                client:load 
+                events={timelineEvents} 
+                className="bg-background rounded-lg shadow-sm"
+            />
         </div>
     </section>
 </div>

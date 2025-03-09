@@ -29,6 +29,8 @@ module.exports = {
         "input-foreground": "var(--input-foreground)",
         destructive: "var(--destructive)",
         "destructive-foreground": "var(--destructive-foreground)",
+        link: "var(--link)",
+        "link-hover": "var(--link-hover)",
       },
       borderColor: {
         DEFAULT: "var(--border)",
@@ -44,5 +46,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 } 
