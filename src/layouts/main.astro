@@ -37,5 +37,26 @@ const { content, title = content?.title || "Becky's Portfolio", description = "P
 	<body class="bg-background text-foreground">
 		<FloatingNavbar client:load />
 		<slot />
+
+		<script>
+			// Check if we have a stored scroll target
+			document.addEventListener('DOMContentLoaded', () => {
+				const scrollTarget = sessionStorage.getItem('scrollTarget');
+				if (scrollTarget) {
+					// Clear the stored target
+					sessionStorage.removeItem('scrollTarget');
+					
+					// Find the element to scroll to
+					const targetElement = document.getElementById(scrollTarget);
+					if (targetElement) {
+						// Wait a moment for everything to load
+						setTimeout(() => {
+							// Scroll to the element
+							targetElement.scrollIntoView({ behavior: 'smooth' });
+						}, 100);
+					}
+				}
+			});
+		</script>
 	</body>
 </html>

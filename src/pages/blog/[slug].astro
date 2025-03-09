@@ -1,0 +1,62 @@
+---
+import BlogPostLayout from '@/layouts/blog-post.astro';
+import { getCollection } from 'astro:content';
+
+// Generate static paths for all blog posts
+export async function getStaticPaths() {
+  const blogPosts = await getCollection('blog');
+  return blogPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+// Get the post data from props
+const { post } = Astro.props;
+
+// Get the rendered content
+const { Content } = await post.render();
+
+// SEO metadata
+const title = `${post.data.title} | Becky's Blog`;
+const description = post.data.excerpt;
+---
+
+<BlogPostLayout title={title} description={description}>
+  <main class="max-w-3xl mx-auto px-4 py-12">
+    <div class="mb-8">
+      <a href="/#thoughts" class="text-link hover:text-link-hover">
+        ← Back to all posts
+      </a>
+    </div>
+    
+    <article class="prose prose-lg dark:prose-invert max-w-none">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">{post.data.title}</h1>
+      <p class="text-muted-foreground mb-8">
+        {post.data.date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })}
+      </p>
+      
+      <div class="blog-content">
+        <Content />
+      </div>
+    </article>
+  </main>
+</BlogPostLayout>
+
+<style>
+  .blog-content :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .blog-content :global(p) {
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+  }
+</style> 
