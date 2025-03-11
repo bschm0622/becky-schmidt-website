@@ -31,7 +31,7 @@ export function ResumeCard({
   const skillsArray = skills ? skills.split(',').map(item => item.trim()) : [];
 
   return (
-    <Card className={cn("overflow-hidden transition-all hover:shadow-sm flex flex-col bg-background", className)} {...props}>
+    <Card className={cn("overflow-hidden transition-all hover:shadow-sm flex flex-col bg-background w-full md:max-w-[650px] lg:max-w-[1000px]", className)} {...props}>
       <CardHeader className="pb-3">
         <div className="flex flex-col space-y-1">
           <CardTitle className="text-xl">{title}</CardTitle>

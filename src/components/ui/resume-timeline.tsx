@@ -104,7 +104,7 @@ export default function HorizontalTimeline({ events, className }: TimelineProps)
                                     activeEvent === event.id ? "border-primary shadow-md" : "opacity-90 hover:opacity-100",
                                     expandedEvent === event.id 
                                         ? "md:w-[400px] md:min-h-[250px]" 
-                                        : "md:w-[250px] md:min-h-[180px]",
+                                        : "md:w-[400px] md:min-h-[180px]",
                                     "w-full max-w-[calc(100%-3rem)] md:max-w-none"
                                 )}
                                 onClick={(e) => handleCardClick(e, event.id)}
