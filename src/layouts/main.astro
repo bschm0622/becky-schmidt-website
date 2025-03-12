@@ -5,6 +5,7 @@ import { SEO } from "astro-seo";
 
 // Just accept the props as they are passed from the page
 const { title, description } = Astro.props;
+
 ---
 
 <html lang="en" class="light">
@@ -20,6 +21,7 @@ const { title, description } = Astro.props;
 		<SEO
 			title={title}
 			description={description}
+			canonical={Astro.url.href}
 			openGraph={{
 				basic: {
 					title: title,
@@ -30,13 +32,19 @@ const { title, description } = Astro.props;
 				optional: {
 					description: description,
 					siteName: "Becky's Portfolio",
+				},
+				image: {
+					alt: "Becky Schmidt - Product Manager",
+					width: 1200,
+					height: 630,
 				}
 			}}
 			twitter={{
-				card: "summary",
+				card: "summary_large_image",
 				title: title,
 				description: description,
 				image: new URL('/opengraph-image.png', Astro.site).toString(),
+				imageAlt: "Becky Schmidt - Product Manager"
 			}}
 			extend={{
 				link: [
