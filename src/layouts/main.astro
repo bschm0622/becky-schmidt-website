@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { FloatingNavbar } from "@/components/ui/navbar";
+import { SEO } from "astro-seo";
 const { content, title = content?.title || "Becky's Portfolio", description = "Personal portfolio showcasing my projects, skills, and experience in web development" } = Astro.props;
 ---
 
@@ -9,25 +10,37 @@ const { content, title = content?.title || "Becky's Portfolio", description = "P
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		<meta name="author" content="Becky" />
 		
-		<!-- Open Graph / Social Media Meta Tags -->
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content={Astro.url.href} />
-		<!-- Add an og:image if you have a social preview image -->
-		<!-- <meta property="og:image" content="https://yoursite.com/social-preview.jpg" /> -->
-		
-		<!-- Twitter Card data -->
-		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		
-		<!-- Canonical URL to prevent duplicate content issues -->
-		<link rel="canonical" href={Astro.url.href} />
+		<SEO
+			title={title}
+			description={description}
+			openGraph={{
+				basic: {
+					title: title,
+					type: "website",
+					image: "/default-og-image.png", // Default fallback image
+					url: Astro.url.href,
+				},
+				optional: {
+					description: description,
+					siteName: "Becky's Portfolio",
+				}
+			}}
+			twitter={{
+				card: "summary",
+				title: title,
+				description: description,
+			}}
+			extend={{
+				link: [
+					{ rel: "canonical", href: Astro.url.href },
+				],
+				meta: [
+					{ name: "author", content: "Becky" },
+					{ name: "robots", content: "index, follow" },
+				],
+			}}
+		/>
 		
 		<link
 			rel="icon"

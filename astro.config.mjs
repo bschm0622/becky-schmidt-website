@@ -2,12 +2,12 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
 
+import sitemap from '@astrojs/sitemap';
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [
-    tailwind(),
-    react()
-  ],
+  site: 'https://beckyschmidt.me',
+  integrations: [tailwind(), react(), sitemap()],
   build: {
     outDir: 'dist', // Explicitly set the output directory to `dist`
   },
@@ -26,6 +26,9 @@ export default defineConfig({
         block-all-mixed-content;
         upgrade-insecure-requests;
       `
+    },
+    "resolutions": {
+      "cookie": "0.7.0"
     }
   }
 });
