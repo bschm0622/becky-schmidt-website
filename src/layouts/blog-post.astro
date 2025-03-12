@@ -1,8 +1,7 @@
 ---
 import "../styles/global.css";
 import Footer from "@/components/footer.astro";
-import { Button } from "@/components/ui/button";
-
+import { SEO } from "astro-seo";
 const { title, description } = Astro.props;
 ---
 
@@ -11,23 +10,37 @@ const { title, description } = Astro.props;
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta name="author" content="Becky" />
-
-        <!-- Open Graph / Social Media Meta Tags -->
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={Astro.url.href} />
-
-        <!-- Twitter Card data -->
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-
-        <!-- Canonical URL to prevent duplicate content issues -->
-        <link rel="canonical" href={Astro.url.href} />
+        
+        <SEO
+            title={title}
+            description={description}
+            openGraph={{
+                basic: {
+                    title: title,
+                    type: "article",
+                    image: "/default-og-image.png", // Default fallback image for all posts
+                    url: Astro.url.href,
+                },
+                optional: {
+                    description: description,
+                    siteName: "Becky's Blog",
+                }
+            }}
+            twitter={{
+                card: "summary",
+                title: title,
+                description: description,
+            }}
+            extend={{
+                link: [
+                    { rel: "canonical", href: Astro.url.href },
+                ],
+                meta: [
+                    { name: "author", content: "Becky" },
+                    { name: "robots", content: "index, follow" },
+                ],
+            }}
+        />
 
         <link
             rel="icon"
@@ -39,4 +52,3 @@ const { title, description } = Astro.props;
         <Footer />
     </body>
 </html>
-

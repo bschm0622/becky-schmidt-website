@@ -42,7 +42,13 @@ export function ProjectCard({
         <div className="flex w-full items-center gap-4">
           {logoSrc && (
             <div className="flex-shrink-0 w-16 h-16 rounded-md overflow-hidden bg-muted flex items-center justify-center">
-              <img src={logoSrc} alt={logoAlt} className="w-full h-full object-contain bg-white" />
+              <img 
+                src={logoSrc} 
+                alt={logoAlt} 
+                className="w-full h-full object-contain bg-white" 
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           )}
           <CardTitle className="flex-1">{title}</CardTitle>
