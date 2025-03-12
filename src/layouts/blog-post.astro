@@ -2,6 +2,8 @@
 import "../styles/global.css";
 import Footer from "@/components/footer.astro";
 import { SEO } from "astro-seo";
+
+// Just accept the props as they are passed from the page
 const { title, description } = Astro.props;
 ---
 
@@ -10,6 +12,9 @@ const { title, description } = Astro.props;
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        
+        <!-- Explicit meta tags for maximum compatibility -->
+        <title>{title}</title>
         <meta name="description" content={description} />
         
         <SEO

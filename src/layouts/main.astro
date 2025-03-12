@@ -2,7 +2,9 @@
 import "../styles/global.css";
 import { FloatingNavbar } from "@/components/ui/navbar";
 import { SEO } from "astro-seo";
-const { content, title = content?.title || "Becky's Portfolio", description = "Personal portfolio showcasing my projects, skills, and experience in web development" } = Astro.props;
+
+// Just accept the props as they are passed from the page
+const { title, description } = Astro.props;
 ---
 
 <html lang="en" class="light">
@@ -10,6 +12,9 @@ const { content, title = content?.title || "Becky's Portfolio", description = "P
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		
+		<!-- Explicit meta tags for maximum compatibility -->
+		<title>{title}</title>
 		<meta name="description" content={description} />
 		
 		<SEO
