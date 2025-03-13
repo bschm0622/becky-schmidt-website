@@ -1,11 +1,13 @@
 # Becky Schmidt's Personal Website
 
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/bschm0622/becky-schmidt-website)
+
 This is my personal portfolio website built with Astro and Tailwind CSS. It showcases my projects, skills, and experience as a product manager.
 
 ## 🔗 Links
 
 - **Live Website**: [beckyschmidt.me](https://beckyschmidt.me)
-- **GitHub Repository**: [github.com/bschm0622/personal-website](https://github.com/bschm0622/personal-website)
+- **GitHub Repository**: [github.com/bschm0622/becky-schmidt-website](https://github.com/bschm0622/becky-schmidt-website)
 
 ## 🚀 Features
 
@@ -103,3 +105,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Framer Motion](https://www.framer.com/motion/) for the smooth animations
 - [Cloudflare](https://www.cloudflare.com/) for the hosting platform
 - [Wrangler](https://developers.cloudflare.com/workers/wrangler/) for the deployment CLI
+
+---
+
+<div align="center">
+  <a href="https://github.com/bschm0622/becky-schmidt-website">
+    View on GitHub
+  </a>
+</div>
