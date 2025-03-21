@@ -1,14 +1,14 @@
 ---
 title: "How I Used Product Management Principles to Build My Website with AI"
-date: 2025-03-11
+date: 2025-03-21
 excerpt: "I'm convinced product managers make the best AI prompters because we're already experts at translating ideas into tasks and building products users will love."
 ---
 
-I built a custom website without writing a single line of code. Instead, I worked with AI like I would with a project team: setting clear vision, structured requirements, and iterative execution. In other words, I product-managed my way to a working website. Here’s how applying PM principles helped me build faster and smarter with AI.
+I built my website from scratch without writing a single line of code. Instead, I worked with AI using principles that I've learned from product management: setting a clear vision, providing structured requirements, and iterating on ideas to reach final execution. By using this framework, I got from ideation to launch in less than 2 weeks. Here's how I used my product management skills to build faster with Cursor.
 
 ## Vision
 
-Building my website needed to start with a clear vision. I wanted a central hub that serves as my professional “home” on the internet to represent me through each design decision and word on the screen. With this vision in mind, I was able to guide AI effectively.  Without a clear vision in mind, AI will usually come up with something usable but very generic. If you ask [v0 for a landing page](https://v0.dev/t/RpImR1PAsTR), it’ll give you a vanilla version of every SaaS landing page out there. But by articulating exactly what I needed, I was able to get something tailored to my unique style.
+Building my website needed to start with a clear vision. I wanted a central hub that serves as my professional “home” on the internet to represent me and my professional experiences. I wanted the site to feel inviting and clean, without being too plain. Without a clear vision in mind, AI will usually come up with something usable but very generic. If you ask [v0 for a landing page](https://v0.dev/t/RpImR1PAsTR), it’ll give you a vanilla version of every SaaS landing page out there. By articulating exactly what I wanted, I was able to produce a website that reflects my personal style.
 
 ## Requirements
 
@@ -16,11 +16,11 @@ Once I had the vision, it was time to define the requirements. I selected the te
 
 I chose 6 sections (home, about, projects, resume, blog, and connect with me) on a single page site. I fed those sections one by one to Cursor. Just like in product management, it’s important to break down projects into smaller tasks. Without the requirements clearly structured, the AI model will easily go off on its own, but by setting clear requirements, you can achieve great results.
 
-For example, I wanted a custom timeline for my resume. I broke it down into simple steps for the AI to execute: first, create a horizontal scroll. Next, build expandable cards. Finally, optimize it for mobile. With each step clearly defined, the AI was able to deliver exactly what I had envisioned.
+For example, I wanted a custom timeline for my resume. I broke it down into simple steps for the AI to execute: first, create a horizontal scroll. Next, build expandable cards. Finally, optimize it for mobile. With each step clearly defined, the AI was able to deliver exactly what I had envisioned without completely destroying my codebase, or getting confused.
 
 ## Execution
 
-When building with AI, the sky's the limit, especially when you’re both the developer and the project manager. Once the requirements were clear, I focused on getting a working version live, addressing all bugs, and then tinkered until I was happy with the result. I resisted the urge to keep tweaking it by staying focused on the final goal of shipping a functional website quickly, knowing I can iterate again later.
+When building with AI, the sky's the limit, especially when you’re both the developer and the project manager. Once the requirements were clear, I focused on getting a working version live, addressing all bugs, and then tinkered with the design until I was happy with the result. I resisted the urge to keep tweaking it by staying focused on the final goal of shipping a functional website quickly, knowing I can iterate again later.
 
 ## Message
 
@@ -28,4 +28,4 @@ Once the site was up, it was time to “sell.” A great product manager knows h
 
 ## Conclusion
 
-Building my website with AI wasn’t just about coding, it was an exercise in product management. Working with AI on projects like [bibleplan.app](https://bibleplan.app?ref=becky-personal-website) and [wellspringarchive.com](https://wellspringarchive.com?ref=becky-personal-website) has helped me sharpen my skills and speed up workflows. I’m convinced product managers make the best AI prompters because we’re already experts at translating ideas into tasks and building products users will love. AI just helps us do it faster. Now, every time I use AI, I’m flexing my PM muscles.
+Building my website with AI started from a desire to try out the latest technology, but it also turned into an exercise in product management. Beyond this website, I've also worked with Cursor on two other projects, [bibleplan.app](https://bibleplan.app?ref=becky-personal-website) and [wellspringarchive.com](https://wellspringarchive.com?ref=becky-personal-website), and all of these epxeriences combined have helped me sharpen my skills and speed up workflows. I’m convinced product managers make the best AI prompters because we’re already experts at translating ideas into tasks and building products users will love. AI just helps us do it faster. Now, every time I use AI, I’m flexing my PM muscles.
