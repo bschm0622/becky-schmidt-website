@@ -21,7 +21,7 @@ As a Christian, I begin my day in prayer, asking for strength, patience, and the
 
 ## 2. Clear Expectations
 
-When I returned to work, I made sure my employer knew that my daughter would be home with me during the week. Two days a week, I would be solo while my husband was in the office. I wasn’t presenting this as an excuse—just giving them a clear picture of my situation. If you plan to care for your child while working remotely, I highly recommend being upfront about it. Setting expectations early can go a long way in building trust.
+When I returned to work, I made sure my employer knew that my daughter would be home with me during the week. Two days a week, I would be solo while my husband was in the office. I wasn’t presenting this as an excuse, just giving them a clear picture of my situation. If you plan to care for your child while working remotely, I highly recommend being upfront about it. Setting expectations early can go a long way in building trust.
 
 I also set expectations with my daughter. Even though she’s still a baby, I believe she understands more than we often give her credit for. I talk to her throughout the day and explain what I’m doing. If I’m about to join a meeting, I tell her that I’ll be talking and won’t be able to play, and that I need her to entertain herself for a little while. Those little moments of communication helped lay the foundation for something important: independent play.
 
