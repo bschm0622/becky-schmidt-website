@@ -15,8 +15,10 @@ const { title, description } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		
 		<!-- Umami Analytics -->
+		{import.meta.env.PROD && (
 		<script defer src="https://cloud.umami.is/script.js" data-website-id="2d238baf-947c-468a-aac9-1ac81b265110"></script>
-		
+		)}
+
 		<!-- Explicit meta tags for maximum compatibility -->
 		<title>{title}</title>
 		<meta name="description" content={description} />
