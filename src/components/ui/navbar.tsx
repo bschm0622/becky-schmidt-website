@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "@/components/ui/theme-toggle"; // Ensure the path is correct
 
 interface NavItem {
   label: string;
@@ -27,30 +28,19 @@ export function FloatingNavbar() {
   // Check URL hash on initial load and handle navigation
   useEffect(() => {
     const handleInitialHash = () => {
-      // Get the hash from the URL
       const hash = window.location.hash;
-      
       if (hash && hash.length > 1) {
-        // Set the active item based on the hash
         setActiveItem(hash);
-        
-        // Wait a moment for the page to fully load
         setTimeout(() => {
-          // Find the element with this ID
           const element = document.querySelector(hash);
           if (element) {
             setIsScrolling(true);
-            
-            // Calculate position to scroll to (accounting for navbar)
             const elementPosition = element.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - 100;
-            
             window.scrollTo({
               top: offsetPosition,
               behavior: "smooth"
             });
-            
-            // Reset isScrolling after animation completes
             setTimeout(() => setIsScrolling(false), 1000);
           }
         }, 100);
@@ -58,8 +48,6 @@ export function FloatingNavbar() {
     };
     
     handleInitialHash();
-    
-    // Also handle hash changes while on the page
     window.addEventListener('hashchange', handleInitialHash);
     return () => window.removeEventListener('hashchange', handleInitialHash);
   }, []);
@@ -67,30 +55,21 @@ export function FloatingNavbar() {
   // Handle scroll to update active section and navbar appearance
   useEffect(() => {
     const handleScroll = () => {
-      // Don't update active section during programmatic scrolling
       if (isScrolling) return;
-      
-      // Add shadow when scrolled down
       setScrolled(window.scrollY > 20);
-      
-      // Update active section based on scroll position
+
       const sections = navItems.map(item => item.href);
-      
-      // Special case for top of page
       if (window.scrollY < 100) {
         setActiveItem("#top");
         return;
       }
-      
-      // Find the current section in view
+
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i];
         if (section === "#top") continue;
-        
         const element = document.querySelector(section);
         if (element) {
           const rect = element.getBoundingClientRect();
-          // Consider a section in view when its top is within the top half of the viewport
           if (rect.top <= window.innerHeight / 2) {
             setActiveItem(section);
             break;
@@ -99,7 +78,6 @@ export function FloatingNavbar() {
       }
     };
 
-    // Throttle scroll events for better performance
     let ticking = false;
     const scrollListener = () => {
       if (!ticking) {
@@ -118,13 +96,9 @@ export function FloatingNavbar() {
   const scrollToSection = (href: string) => {
     setIsScrolling(true);
     setActiveItem(href);
-    setMobileMenuOpen(false); // Close mobile menu when navigating
-    
-    // Update the URL hash without causing a page jump
-    // This replaces the current history state instead of adding a new one
+    setMobileMenuOpen(false);
     window.history.replaceState(null, '', href);
-    
-    // Special case for top of page
+
     if (href === "#top") {
       window.scrollTo({
         top: 0,
@@ -133,19 +107,15 @@ export function FloatingNavbar() {
       setTimeout(() => setIsScrolling(false), 1000);
       return;
     }
-    
+
     const element = document.querySelector(href);
     if (element) {
-      // Calculate position to scroll to (accounting for navbar)
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - 100;
-      
       window.scrollTo({
         top: offsetPosition,
         behavior: "smooth"
       });
-      
-      // Reset isScrolling after animation completes
       setTimeout(() => setIsScrolling(false), 1000);
     } else {
       setIsScrolling(false);
@@ -262,6 +232,9 @@ export function FloatingNavbar() {
         
         {/* Desktop navigation */}
         <DesktopNav />
+        
+        {/* Theme toggle */}
+        <ThemeToggle />
         
         {/* Mobile hamburger button */}
         <div className="md:hidden ml-auto h-10 flex items-center justify-center">

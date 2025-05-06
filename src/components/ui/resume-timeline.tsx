@@ -136,7 +136,7 @@ export default function HorizontalTimeline({ events, className }: TimelineProps)
                                 </CardContent>
                                 {event.details && event.details.length > 0 && (
                                     <CardFooter className="pt-0">
-                                        <div className="w-full text-center text-xs text-primary-foreground/10 hover:text-primary/80 font-medium">
+                                        <div className="w-full text-center text-xs text-foreground/10 hover:text-primary/80 font-medium">
                                             {expandedEvent === event.id ? "Show less" : "Show more"}
                                         </div>
                                     </CardFooter>

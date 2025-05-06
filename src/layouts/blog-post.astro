@@ -1,80 +1,29 @@
 ---
-import "../styles/global.css";
+import "@/styles/global.css";
+import { ThemeProvider } from "@/components/ui/theme-context";
 import Footer from "@/components/footer.astro";
-import { SEO } from "astro-seo";
+import Head from "@/components/head.astro";
+import ThemeToggle from "@/components/ui/theme-toggle";
 
-// Just accept the props as they are passed from the page
-const { title, description } = Astro.props;
 
-// For debugging - remove later
-console.log("Blog layout received description:", description);
+const { title, description, publishDate, author, isBlogPage } = Astro.props;
 ---
 
-<html lang="en" class="light">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        
-        <!-- Umami Analytics -->
-        <script defer src="https://cloud.umami.is/script.js" data-website-id="2d238baf-947c-468a-aac9-1ac81b265110"></script>
-        
-        <!-- Explicit meta tags for maximum compatibility -->
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        
-        <SEO
-            title={title}
-            description={description}
-            canonical={Astro.url.href}
-            openGraph={{
-                basic: {
-                    title: title,
-                    type: "article",
-                    image: new URL('/opengraph-image.png', Astro.site).toString(),
-                    url: Astro.url.href,
-                },
-                optional: {
-                    description: description,
-                    siteName: "Becky's Blog",
-                },
-                image: {
-                    alt: "Becky Schmidt - Blog",
-                    width: 1200,
-                    height: 630,
-                },
-                article: {
-                    publishedTime: new Date().toISOString(),
-                    authors: ["Becky Schmidt"],
-                }
-            }}
-            twitter={{
-                card: "summary_large_image",
-                title: title,
-                description: description,
-                image: new URL('/opengraph-image.png', Astro.site).toString(),
-                imageAlt: "Becky Schmidt - Blog"
-            }}
-            extend={{
-                link: [
-                    { rel: "canonical", href: Astro.url.href },
-                ],
-                meta: [
-                    { name: "author", content: "Becky" },
-                    { name: "robots", content: "index, follow" },
-                    { property: "og:image:width", content: "1200" },
-                    { property: "og:image:height", content: "630" },
-                ],
-            }}
-        />
-
-        <link
-            rel="icon"
-            href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👋</text></svg>"
-        />
-    </head>
-    <body class="bg-background text-foreground">
-        <slot />
-        <Footer />
-    </body>
+<html lang="en">
+    <Head 
+        title={title} 
+        description={description} 
+        publishDate={publishDate} 
+        author={author} 
+        isBlogPage={isBlogPage || true}
+    />
+  <body class="bg-background text-foreground">
+    <ThemeProvider>
+      <div class="fixed top-4 right-4 z-50">
+        <ThemeToggle client:visible />
+      </div>
+      <slot />
+      <Footer />
+    </ThemeProvider>
+  </body>
 </html>

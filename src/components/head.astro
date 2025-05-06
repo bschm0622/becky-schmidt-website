@@ -1,0 +1,79 @@
+---
+const { title, description, publishDate, author, isBlogPage } = Astro.props;
+import { SEO } from "astro-seo";
+---
+
+<head>
+    <script>
+        (function () {
+            const theme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = theme === 'dark' || (!theme && prefersDark);
+            
+            // Apply the dark theme to <html> immediately
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+
+    <!-- Basic Meta Tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Page Title and Description -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- SEO: Open Graph & Twitter -->
+    <SEO
+      title={title}
+      description={description}
+      canonical={Astro.url.href}
+      openGraph={{
+        basic: {
+          title,
+          type: isBlogPage ? "article" : "website",
+          image: new URL('/opengraph-image.png', Astro.site).toString(),
+          url: Astro.url.href,
+        },
+        optional: {
+          description,
+          siteName: isBlogPage ? "Becky's Blog" : "Becky's Portfolio",
+        },
+        image: {
+          alt: "Becky Schmidt - " + (isBlogPage ? "Blog" : "Product Manager"),
+          width: 1200,
+          height: 630,
+        },
+        article: isBlogPage ? {
+          publishedTime: publishDate || new Date().toISOString(),
+          authors: author ? [author] : ["Becky Schmidt"],
+        } : undefined,
+      }}
+      twitter={{
+        card: "summary_large_image",
+        title,
+        description,
+        image: new URL('/opengraph-image.png', Astro.site).toString(),
+        imageAlt: "Becky Schmidt - Product Manager"
+      }}
+      extend={{
+        link: [{ rel: "canonical", href: Astro.url.href }],
+        meta: [
+          { name: "author", content: author || "Becky" },
+          { name: "robots", content: "index, follow" },
+          { property: "og:image:width", content: "1200" },
+          { property: "og:image:height", content: "630" },
+        ],
+      }}
+    />
+
+    <!-- Umami Analytics (only in production) -->
+    {import.meta.env.PROD && (
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="2d238baf-947c-468a-aac9-1ac81b265110"></script>
+    )}
+</head>
