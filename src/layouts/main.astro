@@ -15,7 +15,7 @@ const { title, description, isBlogPage } = Astro.props;
 	/>
   <body class="bg-background text-foreground">
     <ThemeProvider>
-      <FloatingNavbar client:visible />
+      <FloatingNavbar client:load />
       <slot />
 
       <script>

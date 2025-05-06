@@ -139,4 +139,10 @@
   a:hover {
     color: var(--link-hover);
   }
+
+/* Prevent jumpy default scroll behavior for anchor links */
+html:has(body[data-hash-scrolled]) {
+  scroll-behavior: auto !important;
+}
+
 }
