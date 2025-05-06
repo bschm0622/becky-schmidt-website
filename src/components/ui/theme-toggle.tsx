@@ -32,16 +32,17 @@ export default function ThemeToggle() {
       {mounted ? (
         isDarkMode ? (
           // Moon icon
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+            <path d="M15.5 18.5l-3 1.5l.5 -3.5l-2 -2l3 -.5l1.5 -3l1.5 3l3 .5l-2 2l.5 3.5z"></path>
+            <path d="M4 4l7 7"></path>
+            <path d="M9 4l3.5 3.5"></path>
+            <path d="M4 9l3.5 3.5"></path>
           </svg>
         ) : (
           // Sun icon
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+            <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+            <path d="M6 6h3.5l2.5 -2.5l2.5 2.5h3.5v3.5l2.5 2.5l-2.5 2.5v3.5h-3.5l-2.5 2.5l-2.5 -2.5h-3.5v-3.5l-2.5 -2.5l2.5 -2.5z"></path>
           </svg>
         )
       ) : (
