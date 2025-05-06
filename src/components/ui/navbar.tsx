@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { cn } from "../../lib/utils";
+import React, { useState, useEffect, useCallback } from "react";
+import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "@/components/ui/theme-toggle"; // Ensure the path is correct
 
 interface NavItem {
   label: string;
@@ -24,82 +25,33 @@ export function FloatingNavbar() {
   const [isScrolling, setIsScrolling] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Check URL hash on initial load and handle navigation
-  useEffect(() => {
-    const handleInitialHash = () => {
-      // Get the hash from the URL
-      const hash = window.location.hash;
-      
-      if (hash && hash.length > 1) {
-        // Set the active item based on the hash
-        setActiveItem(hash);
-        
-        // Wait a moment for the page to fully load
-        setTimeout(() => {
-          // Find the element with this ID
-          const element = document.querySelector(hash);
-          if (element) {
-            setIsScrolling(true);
-            
-            // Calculate position to scroll to (accounting for navbar)
-            const elementPosition = element.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - 100;
-            
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: "smooth"
-            });
-            
-            // Reset isScrolling after animation completes
-            setTimeout(() => setIsScrolling(false), 1000);
-          }
-        }, 100);
-      }
-    };
-    
-    handleInitialHash();
-    
-    // Also handle hash changes while on the page
-    window.addEventListener('hashchange', handleInitialHash);
-    return () => window.removeEventListener('hashchange', handleInitialHash);
-  }, []);
-
   // Handle scroll to update active section and navbar appearance
-  useEffect(() => {
-    const handleScroll = () => {
-      // Don't update active section during programmatic scrolling
-      if (isScrolling) return;
-      
-      // Add shadow when scrolled down
-      setScrolled(window.scrollY > 20);
-      
-      // Update active section based on scroll position
-      const sections = navItems.map(item => item.href);
-      
-      // Special case for top of page
-      if (window.scrollY < 100) {
-        setActiveItem("#top");
-        return;
-      }
-      
-      // Find the current section in view
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        if (section === "#top") continue;
-        
-        const element = document.querySelector(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          // Consider a section in view when its top is within the top half of the viewport
-          if (rect.top <= window.innerHeight / 2) {
-            setActiveItem(section);
-            break;
-          }
+  const handleScroll = useCallback(() => {
+    if (isScrolling) return;
+    setScrolled(window.scrollY > 20);
+
+    const sections = navItems.map(item => item.href);
+    if (window.scrollY < 100) {
+      setActiveItem("#top");
+      return;
+    }
+
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const section = sections[i];
+      if (section === "#top") continue;
+      const element = document.querySelector(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= window.innerHeight / 2) {
+          setActiveItem(section);
+          break;
         }
       }
-    };
+    }
+  }, [isScrolling]);
 
-    // Throttle scroll events for better performance
+  // Throttle scroll events
+  useEffect(() => {
     let ticking = false;
     const scrollListener = () => {
       if (!ticking) {
@@ -113,39 +65,23 @@ export function FloatingNavbar() {
 
     window.addEventListener("scroll", scrollListener);
     return () => window.removeEventListener("scroll", scrollListener);
-  }, [isScrolling]);
+  }, [handleScroll]);
 
+  // Scroll to a section and update hash
   const scrollToSection = (href: string) => {
     setIsScrolling(true);
     setActiveItem(href);
-    setMobileMenuOpen(false); // Close mobile menu when navigating
-    
-    // Update the URL hash without causing a page jump
-    // This replaces the current history state instead of adding a new one
-    window.history.replaceState(null, '', href);
-    
-    // Special case for top of page
-    if (href === "#top") {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-      setTimeout(() => setIsScrolling(false), 1000);
-      return;
-    }
-    
+    setMobileMenuOpen(false);
+    window.history.replaceState(null, "", href);
+
     const element = document.querySelector(href);
     if (element) {
-      // Calculate position to scroll to (accounting for navbar)
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - 100;
-      
       window.scrollTo({
         top: offsetPosition,
         behavior: "smooth"
       });
-      
-      // Reset isScrolling after animation completes
       setTimeout(() => setIsScrolling(false), 1000);
     } else {
       setIsScrolling(false);
@@ -154,7 +90,7 @@ export function FloatingNavbar() {
 
   // Hamburger menu button component
   const HamburgerButton = () => (
-    <button 
+    <button
       onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
       className="inline-flex items-center justify-center rounded-md p-2 text-foreground hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
@@ -162,24 +98,30 @@ export function FloatingNavbar() {
       aria-controls="mobile-menu"
     >
       <div className="relative w-6 h-5 flex items-center justify-center">
-        <span className={cn(
-          "absolute block h-0.5 w-6 bg-current transition-all duration-300 rounded-full",
-          mobileMenuOpen ? "rotate-45" : "translate-y-[-6px]"
-        )} />
-        <span className={cn(
-          "absolute block h-0.5 bg-current transition-all duration-300 rounded-full",
-          mobileMenuOpen ? "opacity-0 w-0" : "opacity-100 w-5"
-        )} />
-        <span className={cn(
-          "absolute block h-0.5 w-6 bg-current transition-all duration-300 rounded-full",
-          mobileMenuOpen ? "-rotate-45" : "translate-y-[6px]"
-        )} />
+        <span
+          className={cn(
+            "absolute block h-0.5 w-6 bg-current transition-all duration-300 rounded-full",
+            mobileMenuOpen ? "rotate-45" : "translate-y-[-6px]"
+          )}
+        />
+        <span
+          className={cn(
+            "absolute block h-0.5 bg-current transition-all duration-300 rounded-full",
+            mobileMenuOpen ? "opacity-0 w-0" : "opacity-100 w-5"
+          )}
+        />
+        <span
+          className={cn(
+            "absolute block h-0.5 w-6 bg-current transition-all duration-300 rounded-full",
+            mobileMenuOpen ? "-rotate-45" : "translate-y-[6px]"
+          )}
+        />
       </div>
     </button>
   );
 
   // Desktop navigation with adjusted spacing
-  const DesktopNav = () => (
+  const DesktopNav = React.memo(() => (
     <ul className="hidden md:flex items-center space-x-1 mx-auto">
       {navItems.map((item) => (
         <li key={item.href}>
@@ -199,17 +141,14 @@ export function FloatingNavbar() {
                 transition={{ type: "spring", duration: 0.5 }}
               />
             )}
-            <span className={cn(
-              "relative z-10",
-              activeItem === item.href ? "text-primary-foreground" : ""
-            )}>
+            <span className={cn("relative z-10", activeItem === item.href ? "text-primary-foreground" : "")}>
               {item.label}
             </span>
           </button>
         </li>
       ))}
     </ul>
-  );
+  ));
 
   // Mobile menu
   const MobileMenu = () => (
@@ -247,10 +186,7 @@ export function FloatingNavbar() {
 
   return (
     <div className="fixed top-6 left-0 right-0 z-50 flex justify-center pointer-events-none px-4">
-      <motion.nav 
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, type: "spring" }}
+      <nav
         className={cn(
           "flex items-center w-auto px-4 py-1.5 rounded-full bg-background/80 backdrop-blur-md pointer-events-auto",
           "border border-border transition-all duration-300 relative",
@@ -259,18 +195,21 @@ export function FloatingNavbar() {
       >
         {/* Logo or brand name could go here */}
         <div className="text-sm font-semibold md:hidden">Portfolio</div>
-        
+
         {/* Desktop navigation */}
         <DesktopNav />
-        
+
+        {/* Theme toggle */}
+        <ThemeToggle />
+
         {/* Mobile hamburger button */}
         <div className="md:hidden ml-auto h-10 flex items-center justify-center">
           <HamburgerButton />
         </div>
-        
+
         {/* Mobile menu dropdown */}
         <MobileMenu />
-      </motion.nav>
+      </nav>
     </div>
   );
 }

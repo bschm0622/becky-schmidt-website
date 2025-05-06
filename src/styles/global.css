@@ -25,86 +25,100 @@
   
   :root {
     /* Primary Brand Colors */
-    --primary: #CFDBD5; /* Muted Green-Gray */
-    --primary-foreground: #242423; /* Dark text for contrast */
-
+    --primary: #CFDBD5; /* Muted green-gray for buttons and highlights */
+    --primary-foreground: #242423; /* Dark text for contrast on light primary */
+  
     /* Secondary Colors */
-    --secondary: #E8EDDF; /* Soft Off-White */
-    --secondary-foreground: #333533; /* Darker contrast text */
-
-    /* Accent Colors - Using a darker shade for better visibility */
-    --accent: #7D8C85; /* Darker version of primary for accent */
-    --accent-foreground: #FFFFFF;
-
+    --secondary: #E8EDDF; /* Soft off-white for subtle sections */
+    --secondary-foreground: #333533; /* Dark text for readable contrast */
+  
+    /* Accent Colors */
+    --accent: #7D8C85; /* Deeper version of primary for accents */
+    --accent-foreground: #FFFFFF; /* Light text for contrast on accent */
+  
     /* Muted Colors */
-    --muted: #E8EDDF;
-    --muted-foreground: #6C6C6C; /* Medium gray for muted text */
-
-    /* Background Colors */
-    --background: #FFFFFF; /* Pure white background */
-    --foreground: #242423; /* Dark neutral text */
-
-    /* Border & Separator Colors */
-    --border: #D9E2DC; /* Lighter version of primary */
-    --separator: #BFC9C2; /* Medium version of primary */
-
-    /* Special UI Colors */
-    --card: #F5F7F2; /* Very light background */
-    --card-foreground: #333533;
-    --popover: #FFFFFF;
-    --popover-foreground: #242423;
-
+    --muted: #E8EDDF; /* Low-contrast background color */
+    --muted-foreground: #6C6C6C; /* Medium gray for muted or secondary text */
+  
+    /* Background and Foreground */
+    --background: #FFFFFF; /* Base background color */
+    --foreground: #242423; /* Default text color */
+  
+    /* Borders and Separators */
+    --border: #D9E2DC; /* Subtle border using a lighter tone of primary */
+    --separator: #BFC9C2; /* Mid-gray separator for subtle divisions */
+  
+    /* Card and Popover UI */
+    --card: #F5F7F2; /* Light card background */
+    --card-foreground: #333533; /* Text on card backgrounds */
+    --popover: #FFFFFF; /* White background for popovers */
+    --popover-foreground: #242423; /* Text on popovers */
+  
     /* Input Fields */
-    --input: #EAEFEA;
-    --input-foreground: #333533;
-
+    --input: #EAEFEA; /* Light input background */
+    --input-foreground: #333533; /* Input text color */
+  
     /* Ring (focus outline) */
-    --ring: #7D8C85; /* Darker version of primary */
-    
-    /* Destructive color */
-    --destructive: #ef4444;
-    --destructive-foreground: #ffffff;
-
-    /* Link colors */
-    --link: #7D8C85; /* Using accent color for links */
-    --link-hover: #5A6A63; /* Darker version for hover */
-
-    /* Add font family variables */
+    --ring: #7D8C85; /* Accent color used for focus outlines */
+  
+    /* Destructive Actions */
+    --destructive: #ef4444; /* Bright red for destructive actions */
+    --destructive-foreground: #ffffff; /* White text on destructive background */
+  
+    /* Link Colors */
+    --link: #4F625C; /* Slightly deeper green-gray for better contrast */
+    --link-hover: #2E3D38; /* Darker tone on hover for clarity */
+  
+    /* Font Family */
     --font-sans: 'Poppins', system-ui, sans-serif;
   }
   
   .dark {
-    --background: #242423; /* Dark gray */
-    --foreground: #F5F7F2; /* Off-white text */
-
-    --primary: #CFDBD5; /* Keep the brand color */
-    --primary-foreground: #242423; /* Dark text on light primary */
-
-    --secondary: #333533; /* Darker background */
-    --secondary-foreground: #F5F7F2; /* Light text */
-
-    --accent: #7D8C85; /* Darker version of primary */
-    --accent-foreground: #FFFFFF;
-
-    --muted: #333533;
-    --muted-foreground: #ADBAB3; /* Lighter version of primary */
-
-    --border: #4A4A49;
-    --separator: #5C5C5B;
-    --card: #333533;
-    --card-foreground: #F5F7F2;
-    --popover: #333533;
-    --popover-foreground: #F5F7F2;
-    --input: #3D3D3C;
-    --input-foreground: #F5F7F2;
-    --ring: #7D8C85;
-    --destructive: #ef4444;
-    --destructive-foreground: #ffffff;
-    
-    /* Link colors for dark mode */
-    --link: #ADBAB3; /* Lighter version of accent for dark mode */
-    --link-hover: #CFDBD5; /* Even lighter on hover */
-  }
+    /* Background and Foreground */
+    --background: #242423; /* Deep gray background */
+    --foreground: #F5F7F2; /* Off-white text for high contrast */
+  
+    /* Primary Brand Colors */
+    --primary: #CFDBD5; /* Light muted green-gray */
+    --primary-foreground: #1A1A1A; /* Darker text to maintain contrast on light primary */
+  
+    /* Secondary Colors */
+    --secondary: #333533; /* Dark gray background alternative */
+    --secondary-foreground: #F5F7F2; /* Light text for contrast */
+  
+    /* Accent Colors */
+    --accent: #7D8C85; /* Deeper version of primary for dark mode accents */
+    --accent-foreground: #FFFFFF; /* Light text for contrast on accent */
+  
+    /* Muted Colors */
+    --muted: #333533; /* Background-style muted color */
+    --muted-foreground: #ADBAB3; /* Light gray text for secondary content */
+  
+    /* Borders and Separators */
+    --border: #4A4A49; /* Subtle borders on dark backgrounds */
+    --separator: #5C5C5B; /* Slightly lighter for visual separation */
+  
+    /* Card and Popover UI */
+    --card: #333533; /* Card background on dark UI */
+    --card-foreground: #F5F7F2; /* Text on dark card background */
+    --popover: #333533; /* Popover background */
+    --popover-foreground: #F5F7F2; /* Text on popovers */
+  
+    /* Input Fields */
+    --input: #3D3D3C; /* Dark input background */
+    --input-foreground: #F5F7F2; /* Light input text */
+  
+    /* Ring (focus outline) */
+    --ring: #7D8C85; /* Accent ring for focused elements */
+  
+    /* Destructive Actions */
+    --destructive: #ef4444; /* Bright red for deletes/errors */
+    --destructive-foreground: #ffffff; /* White text on destructive background */
+  
+    /* Link Colors */
+    --link: #ADBAB3; /* Muted light gray for links */
+    --link-hover: #CFDBD5; /* Brighter hover color for visibility */
+  }  
   
   * {
     @apply border-border outline-none;
@@ -125,4 +139,10 @@
   a:hover {
     color: var(--link-hover);
   }
+
+/* Prevent jumpy default scroll behavior for anchor links */
+html:has(body[data-hash-scrolled]) {
+  scroll-behavior: auto !important;
+}
+
 }

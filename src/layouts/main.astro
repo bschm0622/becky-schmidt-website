@@ -1,97 +1,37 @@
 ---
-import "../styles/global.css";
+import "@/styles/global.css";
 import { FloatingNavbar } from "@/components/ui/navbar";
-import { SEO } from "astro-seo";
+import { ThemeProvider } from "@/components/ui/theme-context";
+import Head from "@/components/head.astro";
 
-// Just accept the props as they are passed from the page
-const { title, description } = Astro.props;
-
+const { title, description, isBlogPage } = Astro.props;
 ---
 
-<html lang="en" class="light">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		
-		<!-- Umami Analytics -->
-		{import.meta.env.PROD && (
-		<script defer src="https://cloud.umami.is/script.js" data-website-id="2d238baf-947c-468a-aac9-1ac81b265110"></script>
-		)}
+<html lang="en">
+	<Head 
+	title={title} 
+	description={description} 
+	isBlogPage={isBlogPage || false}
+	/>
+  <body class="bg-background text-foreground">
+    <ThemeProvider>
+      <FloatingNavbar client:load />
+      <slot />
 
-		<!-- Explicit meta tags for maximum compatibility -->
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		
-		<SEO
-			title={title}
-			description={description}
-			canonical={Astro.url.href}
-			openGraph={{
-				basic: {
-					title: title,
-					type: "website",
-					image: new URL('/opengraph-image.png', Astro.site).toString(),
-					url: Astro.url.href,
-				},
-				optional: {
-					description: description,
-					siteName: "Becky's Portfolio",
-				},
-				image: {
-					alt: "Becky Schmidt - Product Manager",
-					width: 1200,
-					height: 630,
-				}
-			}}
-			twitter={{
-				card: "summary_large_image",
-				title: title,
-				description: description,
-				image: new URL('/opengraph-image.png', Astro.site).toString(),
-				imageAlt: "Becky Schmidt - Product Manager"
-			}}
-			extend={{
-				link: [
-					{ rel: "canonical", href: Astro.url.href },
-				],
-				meta: [
-					{ name: "author", content: "Becky" },
-					{ name: "robots", content: "index, follow" },
-					{ property: "og:image:width", content: "1200" },
-					{ property: "og:image:height", content: "630" },
-				],
-			}}
-		/>
-		
-		<link
-			rel="icon"
-			href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👋</text></svg>"
-		/>
-	</head>
-	<body class="bg-background text-foreground">
-		<FloatingNavbar client:load />
-		<slot />
-
-		<script>
-			// Check if we have a stored scroll target
-			document.addEventListener('DOMContentLoaded', () => {
-				const scrollTarget = sessionStorage.getItem('scrollTarget');
-				if (scrollTarget) {
-					// Clear the stored target
-					sessionStorage.removeItem('scrollTarget');
-					
-					// Find the element to scroll to
-					const targetElement = document.getElementById(scrollTarget);
-					if (targetElement) {
-						// Wait a moment for everything to load
-						setTimeout(() => {
-							// Scroll to the element
-							targetElement.scrollIntoView({ behavior: 'smooth' });
-						}, 100);
-					}
-				}
-			});
-		</script>
-	</body>
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const scrollTarget = sessionStorage.getItem("scrollTarget");
+          if (scrollTarget) {
+            sessionStorage.removeItem("scrollTarget");
+            const target = document.getElementById(scrollTarget);
+            if (target) {
+              setTimeout(() => {
+                target.scrollIntoView({ behavior: "smooth" });
+              }, 100);
+            }
+          }
+        });
+      </script>
+    </ThemeProvider>
+  </body>
 </html>
