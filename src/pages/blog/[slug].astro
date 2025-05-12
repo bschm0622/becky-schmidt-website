@@ -2,17 +2,22 @@
 import BlogPostLayout from "@/layouts/blog-post.astro";
 import { getCollection } from "astro:content";
 import { Button } from "@/components/ui/button";
+
 // Generate static paths for all blog posts
 export async function getStaticPaths() {
     const blogPosts = await getCollection("blog");
     return blogPosts.map((post) => ({
         params: { slug: post.slug },
-        props: { post },
     }));
 }
 
-// Get the post data from props
-const { post } = Astro.props;
+// Get the post data from collection by slug
+const blogPosts = await getCollection("blog");
+const post = blogPosts.find((p) => p.slug === Astro.params.slug);
+
+if (!post) {
+  throw new Error(`Post not found for slug: ${Astro.params.slug}`);
+}
 
 // Get the rendered content
 const { Content } = await post.render();
@@ -63,4 +68,3 @@ const description = post.data.excerpt;
         line-height: 1.7;
     }
 </style>
-
