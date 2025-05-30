@@ -55,6 +55,40 @@ const description = post.data.excerpt;
     </main>
 </BlogPostLayout>
 
+<script>
+    function addCopyButtons() {
+        const codeBlocks = document.querySelectorAll('pre');
+        
+        codeBlocks.forEach((pre) => {
+            if (!pre.querySelector('.copy-button')) {
+                const code = pre.querySelector('code');
+                if (code) {
+                    pre.style.position = 'relative';
+                    const button = document.createElement('button');
+                    button.className = 'copy-button';
+                    button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+                    
+                    button.addEventListener('click', async () => {
+                        await navigator.clipboard.writeText(code.textContent || '');
+                        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                        setTimeout(() => {
+                            button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+                        }, 2000);
+                    });
+                    
+                    pre.appendChild(button);
+                }
+            }
+        });
+    }
+
+    // Run on initial load
+    addCopyButtons();
+    
+    // Also run when Astro swaps pages
+    document.addEventListener('astro:page-load', addCopyButtons);
+</script>
+
 <style>
     .blog-content :global(h2) {
         font-size: 1.5rem;
@@ -66,5 +100,57 @@ const description = post.data.excerpt;
     .blog-content :global(p) {
         margin-bottom: 1.25rem;
         line-height: 1.7;
+    }
+
+    .blog-content :global(pre) {
+        position: relative;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-radius: 0.5rem;
+        background-color: rgb(var(--code-bg));
+    }
+
+    .blog-content :global(pre code) {
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .blog-content :global(.copy-button) {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        padding: 0.5rem;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: all 0.2s;
+        border-radius: 4px;
+    }
+
+    .blog-content :global(.copy-button) {
+        color: rgb(225, 228, 232);
+    }
+
+    .blog-content :global(.copy-button:hover) {
+        background: rgba(225, 228, 232, 0.1);
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    :global(.dark) .blog-content :global(.copy-button) {
+        color: rgb(225, 228, 232);
+    }
+
+    :global(.dark) .blog-content :global(.copy-button:hover) {
+        background: rgba(255, 255, 255, 0.1);
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    .blog-content :global(.copy-button svg) {
+        width: 1rem;
+        height: 1rem;
     }
 </style>
