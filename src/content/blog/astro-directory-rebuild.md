@@ -58,9 +58,9 @@ I use Supabase in two main ways on my podcast directory:
 
 This setup introduced some challenges when switching to Astro.
 
-Unlike Next.js, Astro doesn’t let you query a database at build time if you want to keep your site statically rendered, which was one of the main reasons I switched in the first place. From what I understand, this limitation exists to avoid exposing sensitive information like database credentials during the static build process. There are other more technical reasons, but this is as much as most poeple need to know.
+Unlike Next.js, Astro doesn’t let you pull live data from your database during the build in the same way. Since everything is pre-rendered by default, I had to fetch my data ahead of time by saving it to a JSON file and then import it into the pages. In Next.js, I was used to just grabbing data during the build step, so this extra step in Astro took some getting used to.
 
-Astro also defaults to static pages, which doesn’t work well for my admin interface. That part of the site behaves more like a web app, where I can make changes and then see them updated in real-time.
+The admin side was also a shift. With Next.js, I could load fresh data on each visit without much setup. In Astro, since everything is static by default, I had to handle data loading differently — fetching it in the browser instead of on the server. It works just fine, but it feels more like building a little web app inside a static site.
 
 Lastly, I had to consider how to display live podcast RSS data, which can change frequently and should be able to update as the RSS feed is updated, on demand.
 

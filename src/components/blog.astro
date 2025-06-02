@@ -8,6 +8,10 @@ const allBlogPosts = await getCollection('blog');
 const blogPosts = allBlogPosts.sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
+
+// Split posts into featured and archived
+const featuredPosts = blogPosts.slice(0, 3);
+const archivedPosts = blogPosts.slice(3);
 ---
 
 <div id="blog" class="mx-auto px-4 sm:px-0 text-lg text-foreground">
@@ -17,8 +21,10 @@ const blogPosts = allBlogPosts.sort(
     </h1>
     
     <div class="w-full max-w-4xl">
-      <div class="space-y-8">
-        {blogPosts.map((post) => (
+      <!-- Featured Posts Section -->
+      <div class="space-y-4 mb-12">
+        <h2 class="text-2xl font-semibold text-foreground mb-6">latest posts</h2>
+        {featuredPosts.map((post) => (
           <div class="blog-post-card">
             <a href={`/blog/${post.slug}`} class="block">
               <h2 class="text-xl font-semibold text-link hover:text-link-hover underline decoration-1 underline-offset-2">
@@ -36,6 +42,32 @@ const blogPosts = allBlogPosts.sort(
           </div>
         ))}
       </div>
+
+      <!-- Archived Posts Grid -->
+      {archivedPosts.length > 0 && (
+        <div class="mt-16">
+          <h2 class="text-2xl font-semibold text-foreground mb-6">more posts</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {archivedPosts.map((post) => (
+              <div class="blog-post-card archived">
+                <a href={`/blog/${post.slug}`} class="block">
+                  <h3 class="text-lg font-semibold text-link hover:text-link-hover underline decoration-1 underline-offset-2">
+                    {post.data.title}
+                  </h3>
+                  <p class="mt-2 text-sm line-clamp-2">
+                    {post.data.excerpt}
+                  </p>
+                  <div class="mt-2">
+                    <Button variant="link" className="text-link hover:text-link-hover p-0 text-sm">
+                      Read more →
+                    </Button>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   </section>
 </div>
@@ -52,6 +84,10 @@ const blogPosts = allBlogPosts.sort(
     background-color: rgba(255, 255, 255, 0.05);
     transform: translateY(-2px);
   }
+
+  .blog-post-card.archived {
+    padding: 1.25rem;
+  }
   
   .blog-post-card a {
     text-decoration: none;
@@ -63,5 +99,16 @@ const blogPosts = allBlogPosts.sort(
     .blog-post-card {
       padding: 1rem;
     }
+    
+    .blog-post-card.archived {
+      padding: 1rem;
+    }
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 </style> 
