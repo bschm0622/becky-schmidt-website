@@ -188,12 +188,33 @@ Some parts of the site, like the latest podcast episodes, need to be fresh. But 
 * Each podcast listing includes a small dynamic component (e.g., a box showing the most recent episode).
 * On the podcast detail page, I show the 5 most recent episodes using dynamic data from the RSS feed.
 
-To enable this, I again used:
+To enable this, I again used this script in the component:
 ``` 
 export const prerender = false; 
 ```
 
-…but only for the specific components or pages that truly need dynamic data.
+In order to have the component server-side rendered within a static page,
+I made use of one of another cool Astro feature: [Server Islands](https://docs.astro.build/en/guides/server-islands/).
+
+The idea behind server islands is that you may only need to render a small
+section of the page with dynamic content. Rather than forcing the whole page to be server-side, you can create a little "island" that fetches data dynamically, while leaving the rest of the page statically generated.
+
+After creating my server-rendered RSS feed component, I was able to inject it into my page like this:
+```
+---
+import LatestPodcast from '../components/LatestPodcast.astro';
+import FallbackLatestPodcast from '../components/FallbackLatestPodcast.astro';
+---
+<LatestPodcast server:defer>
+  <FallbackLatestPodcast slot="fallback" />
+</LatestPodcast>
+```
+
+By adding `server:defer` I'm telling the attribute to delay until it's rendered. And you can also add a fallback loading state while you wait for rendering for a nicer user experience with another component and `slot="fallback"`.
+
+Overall, it's a very nice experience for the user where I can always fetch the most recent podcast from the RSS feed without having to rebuild my site every time, but the rest of the site is statically generated and loads super quick.
+
+This is another thing that Cursor didn't really know about. I actually ended up implementing this myself without the help of AI, by watching [this video](https://www.youtube.com/watch?v=Tee9GJsnvKc) from *Coding in Public*, where he actually does the same exact RSS feed embedding, but with YouTube videos instead. I suspect that the reason why AI wasn't able to get me 100% of the way there with Server Islands is because this feature was just experimentally released in [July 2024](https://astro.build/blog/astro-4120/) and then made generally available in September 2024 with the [Astro 5](https://astro.build/blog/astro-5-beta/#stable-server-islands) release. So presumably this will not be an issue within the next year, but something to be aware of when you're using a framework that updates as frequently as Astro does with new, useful features.
 
 #### **Tradeoff: SEO vs. Freshness**
 
