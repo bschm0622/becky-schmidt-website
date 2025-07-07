@@ -1,18 +1,25 @@
 import { Octokit } from '@octokit/rest';
 import type { PagesFunction } from '@cloudflare/workers-types';
 
-interface BlogPost {
+interface BlogPostRequest {
+  password: string;
   title: string;
   date: string;
   excerpt: string;
   markdown: string;
 }
 
-export interface Env {
+interface Env {
   GITHUB_TOKEN: string;
   GITHUB_OWNER: string;
   GITHUB_REPO: string;
   BLOG_PASSWORD: string;
+  ASSETS: {
+    fetch: (
+      input: RequestInfo | URL,
+      init?: RequestInit
+    ) => Promise<Response>;
+  };
 }
 
 function slugify(title: string): string {
@@ -22,15 +29,33 @@ function slugify(title: string): string {
     .replace(/(^-|-$)/g, '');
 }
 
-function formatFrontMatter(post: BlogPost): string {
+// Helper function to handle Unicode characters in base64 encoding
+function base64EncodeUnicode(str: string) {
+  // First we use encodeURIComponent to get percent-encoded UTF-8,
+  // then we convert the percent encodings into raw bytes which
+  // can be fed into btoa.
+  return btoa(
+    encodeURIComponent(str).replace(
+      /%([0-9A-F]{2})/g,
+      (_, p1) => String.fromCharCode(parseInt(p1, 16))
+    )
+  );
+}
+
+// Helper function to format front matter
+function formatFrontMatter(data: { 
+  title: string; 
+  date: string; 
+  excerpt: string; 
+  markdown: string; 
+}): string {
   return `---
-title: ${post.title}
-date: ${post.date}
-excerpt: ${post.excerpt}
+title: ${data.title}
+publishDate: ${data.date}
+excerpt: ${data.excerpt}
 ---
 
-${post.markdown}
-`;
+${data.markdown}`;
 }
 
 // @ts-expect-error: Pages Functions have a different Response type than Workers
@@ -39,7 +64,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     // Get environment variables
     const { GITHUB_TOKEN, GITHUB_OWNER, GITHUB_REPO, BLOG_PASSWORD } = context.env;
 
-    // Log environment variable presence (not values)
+    // Get request data
+    const request: BlogPostRequest = await context.request.json();
+
+    // Validate password
+    if (!request.password || request.password !== BLOG_PASSWORD) {
+      return new Response(JSON.stringify({ error: 'Invalid password' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Log environment variables check (without exposing values)
     console.log('Environment variables check:', {
       hasToken: !!GITHUB_TOKEN,
       hasOwner: !!GITHUB_OWNER,
@@ -47,152 +83,197 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       hasPassword: !!BLOG_PASSWORD
     });
 
-    // Parse request body
-    const request = await context.request.json() as BlogPost & { password: string };
-    
-    // Verify password
-    if (request.password !== BLOG_PASSWORD) {
-      console.log('Password verification failed');
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    // If this is just a password validation request (empty title), return success
-    if (!request.title.trim()) {
-      return new Response(JSON.stringify({ 
-        success: true, 
-        message: 'Password validated successfully'
-      }), {
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    // Create Octokit instance
-    const octokit = new Octokit({
-      auth: GITHUB_TOKEN
-    });
-
-    // Test the GitHub token
-    try {
-      console.log('Testing GitHub token...');
-      const { data: repo } = await octokit.repos.get({
-        owner: GITHUB_OWNER,
-        repo: GITHUB_REPO
-      });
-      console.log('GitHub token test successful, repo exists:', repo.full_name);
-    } catch (error) {
-      console.error('GitHub token test failed:', error);
-      if (error.response) {
-        console.error('GitHub API error details:', {
-          status: error.response.status,
-          data: error.response.data
-        });
+    // Test GitHub token
+    console.log('Testing GitHub token...');
+    const repoResponse = await fetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`,
+      {
+        headers: {
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+          "Content-Type": "application/json",
+        },
       }
-      throw error;
+    );
+
+    if (!repoResponse.ok) {
+      throw new Error('GitHub token test failed: Invalid token or repository not found');
     }
 
-    // Generate filename
-    const slug = slugify(request.title);
+    console.log('GitHub token test successful, repo exists:', `${GITHUB_OWNER}/${GITHUB_REPO}`);
+
+    // Generate filename from title
+    const slug = request.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    
     const filename = `src/content/blog/${slug}.md`;
     console.log('Generated filename:', filename);
 
-    // Generate a unique branch name
-    const branchName = `blog-post/${slug}-${Date.now()}`;
-    console.log('Creating new branch:', branchName);
+    // Format the content with front matter
+    const content = formatFrontMatter({
+      title: request.title,
+      date: request.date,
+      excerpt: request.excerpt,
+      markdown: request.markdown
+    });
 
-    try {
-      // Get the master branch reference
-      const { data: masterRef } = await octokit.git.getRef({
-        owner: GITHUB_OWNER,
-        repo: GITHUB_REPO,
-        ref: 'heads/master'
-      });
-
-      // Create a new branch
-      await octokit.git.createRef({
-        owner: GITHUB_OWNER,
-        repo: GITHUB_REPO,
-        ref: `refs/heads/${branchName}`,
-        sha: masterRef.object.sha
-      });
-
-      // Format content with front matter
-      const content = formatFrontMatter({
-        title: request.title,
-        date: request.date,
-        excerpt: request.excerpt,
-        markdown: request.markdown
-      });
-
-      try {
-        console.log('Attempting to create file with content length:', content.length);
-        const createResponse = await octokit.repos.createOrUpdateFileContents({
-          owner: GITHUB_OWNER,
-          repo: GITHUB_REPO,
-          path: filename,
-          message: `Add new blog post: ${request.title}`,
-          content: btoa(content),
-          branch: branchName
-        });
-        console.log('GitHub API response:', createResponse.status, createResponse.data);
-
-        // Create a pull request
-        const { data: pullRequest } = await octokit.pulls.create({
-          owner: GITHUB_OWNER,
-          repo: GITHUB_REPO,
-          title: `Add blog post: ${request.title}`,
-          head: branchName,
-          base: 'master',
-          body: `New blog post: ${request.title}\n\nExcerpt: ${request.excerpt}`
-        });
-
-        console.log('Created pull request:', pullRequest.html_url);
-
-        return new Response(JSON.stringify({ 
-          success: true, 
-          message: 'Pull request created successfully',
-          pullRequestUrl: pullRequest.html_url,
-          slug 
-        }), {
-          headers: { 'Content-Type': 'application/json' }
-        });
-      } catch (createError) {
-        console.error('Error creating file:', createError);
-        if (createError.response) {
-          console.error('GitHub API error details:', {
-            status: createError.response.status,
-            data: createError.response.data
-          });
-        }
-        throw createError;
+    // Get the main branch SHA
+    const mainBranchResponse = await fetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/refs/heads/master`,
+      {
+        headers: {
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+          "Content-Type": "application/json",
+        },
       }
-    } catch (error) {
-      console.error('Error in branch or PR creation:', error);
-      if (error.response) {
-        console.error('GitHub API error details:', {
-          status: error.response.status,
-          data: error.response.data
-        });
-      }
-      throw error;
+    );
+
+    if (!mainBranchResponse.ok) {
+      const errorData = await mainBranchResponse.json();
+      throw new Error(`Failed to get main branch: ${errorData.message || mainBranchResponse.statusText}`);
     }
 
-    // If we get here, something unexpected happened
-    console.error('Unexpected flow - could not create or update file');
-    return new Response(JSON.stringify({ 
-      error: 'Failed to process request',
-      details: 'Could not create or update file'
-    }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  } catch (error) {
-    console.error('Error publishing post:', error);
+    const mainBranchData = await mainBranchResponse.json();
+    const mainBranchSha = mainBranchData.object.sha;
+
+    // Generate branch name with timestamp
+    const timestamp = Date.now();
+    const branchName = `blog-post/${slug}-${timestamp}`;
+
+    try {
+      console.log("Creating new branch:", branchName);
+      
+      const createBranchResponse = await fetch(
+        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/refs`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${GITHUB_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ref: `refs/heads/${branchName}`,
+            sha: mainBranchSha,
+          }),
+        }
+      );
+
+      if (!createBranchResponse.ok) {
+        const errorData = await createBranchResponse.json();
+        throw new Error(`Failed to create branch: ${errorData.message || createBranchResponse.statusText}`);
+      }
+
+      // Create the file in the new branch
+      const fileContent = base64EncodeUnicode(content);
+      
+      try {
+        console.log("Attempting to create file with content length:", content.length);
+        
+        const createFileResponse = await fetch(
+          `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filename}`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${GITHUB_TOKEN}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              message: `Add new blog post: ${request.title}`,
+              content: fileContent,
+              branch: branchName,
+            }),
+          }
+        );
+
+        if (!createFileResponse.ok) {
+          const errorData = await createFileResponse.json();
+          throw new Error(`Failed to create file: ${errorData.message || createFileResponse.statusText}`);
+        }
+
+        const responseData = await createFileResponse.json();
+        console.log('GitHub API response:', createFileResponse.status, responseData);
+
+        // Create pull request
+        const createPrResponse = await fetch(
+          `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/pulls`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${GITHUB_TOKEN}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title: `Add blog post: ${request.title}`,
+              body: `Adding new blog post: ${request.title}\n\nAutomatically generated PR from blog editor.`,
+              head: branchName,
+              base: "master",
+            }),
+          }
+        );
+
+        if (!createPrResponse.ok) {
+          const errorData = await createPrResponse.json();
+          throw new Error(`Failed to create PR: ${errorData.message || createPrResponse.statusText}`);
+        }
+
+        const prData = await createPrResponse.json();
+        console.log('Pull request created:', prData.html_url);
+
+        return new Response(
+          JSON.stringify({ 
+            success: true, 
+            message: 'Post submitted for review',
+            prUrl: prData.html_url 
+          }),
+          {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
+
+      } catch (fileError: unknown) {
+        if (fileError instanceof Error) {
+          console.error('Error creating file:', fileError.message);
+          throw new Error(`Failed to create file: ${fileError.message}`);
+        }
+        console.error('Error creating file:', String(fileError));
+        throw new Error('Failed to create file: Unknown error');
+      }
+
+    } catch (branchError: unknown) {
+      if (branchError instanceof Error) {
+        console.error('Error in branch or PR creation:', branchError.message);
+        return new Response(JSON.stringify({ error: branchError.message }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+      console.error('Error in branch or PR creation:', String(branchError));
+      return new Response(JSON.stringify({ error: 'Unknown error occurred' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error publishing post:', error.message);
+      return new Response(JSON.stringify({ 
+        error: 'Failed to publish post',
+        details: error.message
+      }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
+    // Handle non-Error objects
+    const errorMessage = String(error);
+    console.error('Error publishing post:', errorMessage);
     return new Response(JSON.stringify({ 
       error: 'Failed to publish post',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: 'Unknown error'
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
