@@ -59,6 +59,16 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       });
     }
 
+    // If this is just a password validation request (empty title), return success
+    if (!request.title.trim()) {
+      return new Response(JSON.stringify({ 
+        success: true, 
+        message: 'Password validated successfully'
+      }), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     // Create Octokit instance
     const octokit = new Octokit({
       auth: GITHUB_TOKEN
@@ -95,7 +105,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           repo: GITHUB_REPO,
           path: filename,
           message: `Update blog post: ${request.title}`,
-          content: Buffer.from(content).toString('base64'),
+          content: btoa(content),
           sha: existingFile.sha,
           branch: 'master'
         });
@@ -117,7 +127,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           repo: GITHUB_REPO,
           path: filename,
           message: `Add new blog post: ${request.title}`,
-          content: Buffer.from(content).toString('base64'),
+          content: btoa(content),
           branch: 'master'
         });
 
