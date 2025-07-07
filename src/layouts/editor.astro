@@ -1,6 +1,8 @@
 ---
 import "@/styles/global.css";
 import Head from "@/components/head.astro";
+import ThemeToggle from "@/components/ui/theme-toggle";
+import { ThemeProvider } from "@/components/ui/theme-context";
 ---
 
 <html lang="en">
@@ -10,8 +12,13 @@ import Head from "@/components/head.astro";
         isBlogPage={false}
     />
     <body class="bg-background text-foreground">
-        <main class="py-12 container mx-auto px-4 max-w-6xl">
-            <slot />
-        </main>
+        <ThemeProvider>
+            <div class="fixed top-4 right-4 z-50">
+                <ThemeToggle client:visible />
+            </div>
+            <main class="py-12 container mx-auto px-4 max-w-6xl">
+                <slot />
+            </main>
+        </ThemeProvider>
     </body>
 </html>
