@@ -98,48 +98,34 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const filename = `src/content/blog/${slug}.md`;
     console.log('Generated filename:', filename);
 
-    // Format content with front matter
-    const content = formatFrontMatter({
-      title: request.title,
-      date: request.date,
-      excerpt: request.excerpt,
-      markdown: request.markdown
-    });
+    // Generate a unique branch name
+    const branchName = `blog-post/${slug}-${Date.now()}`;
+    console.log('Creating new branch:', branchName);
 
     try {
-      // Try to get existing file
-      console.log('Checking if file exists...');
-      const { data: existingFile } = await octokit.repos.getContent({
+      // Get the master branch reference
+      const { data: masterRef } = await octokit.git.getRef({
         owner: GITHUB_OWNER,
         repo: GITHUB_REPO,
-        path: filename,
-        ref: 'master' // Try master branch first
+        ref: 'heads/master'
       });
 
-      if ('content' in existingFile) {
-        console.log('Updating existing file...');
-        // Update existing file
-        await octokit.repos.createOrUpdateFileContents({
-          owner: GITHUB_OWNER,
-          repo: GITHUB_REPO,
-          path: filename,
-          message: `Update blog post: ${request.title}`,
-          content: btoa(content),
-          sha: existingFile.sha,
-          branch: 'master'
-        });
+      // Create a new branch
+      await octokit.git.createRef({
+        owner: GITHUB_OWNER,
+        repo: GITHUB_REPO,
+        ref: `refs/heads/${branchName}`,
+        sha: masterRef.object.sha
+      });
 
-        return new Response(JSON.stringify({ 
-          success: true, 
-          message: 'Post updated successfully',
-          slug 
-        }), {
-          headers: { 'Content-Type': 'application/json' }
-        });
-      }
-    } catch (error) {
-      console.log('File does not exist, creating new one...');
-      // File doesn't exist, create new one
+      // Format content with front matter
+      const content = formatFrontMatter({
+        title: request.title,
+        date: request.date,
+        excerpt: request.excerpt,
+        markdown: request.markdown
+      });
+
       try {
         console.log('Attempting to create file with content length:', content.length);
         const createResponse = await octokit.repos.createOrUpdateFileContents({
@@ -148,13 +134,26 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           path: filename,
           message: `Add new blog post: ${request.title}`,
           content: btoa(content),
-          branch: 'master'
+          branch: branchName
         });
         console.log('GitHub API response:', createResponse.status, createResponse.data);
 
+        // Create a pull request
+        const { data: pullRequest } = await octokit.pulls.create({
+          owner: GITHUB_OWNER,
+          repo: GITHUB_REPO,
+          title: `Add blog post: ${request.title}`,
+          head: branchName,
+          base: 'master',
+          body: `New blog post: ${request.title}\n\nExcerpt: ${request.excerpt}`
+        });
+
+        console.log('Created pull request:', pullRequest.html_url);
+
         return new Response(JSON.stringify({ 
           success: true, 
-          message: 'Post created successfully',
+          message: 'Pull request created successfully',
+          pullRequestUrl: pullRequest.html_url,
           slug 
         }), {
           headers: { 'Content-Type': 'application/json' }
@@ -169,6 +168,15 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
         throw createError;
       }
+    } catch (error) {
+      console.error('Error in branch or PR creation:', error);
+      if (error.response) {
+        console.error('GitHub API error details:', {
+          status: error.response.status,
+          data: error.response.data
+        });
+      }
+      throw error;
     }
 
     // If we get here, something unexpected happened
