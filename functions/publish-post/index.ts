@@ -74,6 +74,25 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       auth: GITHUB_TOKEN
     });
 
+    // Test the GitHub token
+    try {
+      console.log('Testing GitHub token...');
+      const { data: repo } = await octokit.repos.get({
+        owner: GITHUB_OWNER,
+        repo: GITHUB_REPO
+      });
+      console.log('GitHub token test successful, repo exists:', repo.full_name);
+    } catch (error) {
+      console.error('GitHub token test failed:', error);
+      if (error.response) {
+        console.error('GitHub API error details:', {
+          status: error.response.status,
+          data: error.response.data
+        });
+      }
+      throw error;
+    }
+
     // Generate filename
     const slug = slugify(request.title);
     const filename = `src/content/blog/${slug}.md`;
@@ -122,7 +141,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       console.log('File does not exist, creating new one...');
       // File doesn't exist, create new one
       try {
-        await octokit.repos.createOrUpdateFileContents({
+        console.log('Attempting to create file with content length:', content.length);
+        const createResponse = await octokit.repos.createOrUpdateFileContents({
           owner: GITHUB_OWNER,
           repo: GITHUB_REPO,
           path: filename,
@@ -130,6 +150,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           content: btoa(content),
           branch: 'master'
         });
+        console.log('GitHub API response:', createResponse.status, createResponse.data);
 
         return new Response(JSON.stringify({ 
           success: true, 
@@ -140,6 +161,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         });
       } catch (createError) {
         console.error('Error creating file:', createError);
+        if (createError.response) {
+          console.error('GitHub API error details:', {
+            status: createError.response.status,
+            data: createError.response.data
+          });
+        }
         throw createError;
       }
     }
