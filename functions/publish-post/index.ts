@@ -7,6 +7,7 @@ interface BlogPostRequest {
   date: string;
   excerpt: string;
   markdown: string;
+  slug?: string; // Optional custom slug
 }
 
 interface Env {
@@ -89,20 +90,28 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`,
       {
         headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          "Content-Type": "application/json",
+          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'User-Agent': 'Blog-Post-Publisher'
         },
       }
     );
 
     if (!repoResponse.ok) {
-      throw new Error('GitHub token test failed: Invalid token or repository not found');
+      const errorData = await repoResponse.json();
+      console.error('GitHub API error details:', {
+        status: repoResponse.status,
+        statusText: repoResponse.statusText,
+        message: errorData.message
+      });
+      throw new Error(`GitHub token test failed: ${errorData.message || repoResponse.statusText}`);
     }
 
-    console.log('GitHub token test successful, repo exists:', `${GITHUB_OWNER}/${GITHUB_REPO}`);
+    const repoData = await repoResponse.json();
+    console.log('GitHub token test successful, repo exists:', repoData.full_name);
 
-    // Generate filename from title
-    const slug = request.title
+    // Generate filename from title or use custom slug
+    const slug = request.slug || request.title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
@@ -123,14 +132,20 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/refs/heads/master`,
       {
         headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          "Content-Type": "application/json",
+          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'User-Agent': 'Blog-Post-Publisher'
         },
       }
     );
 
     if (!mainBranchResponse.ok) {
       const errorData = await mainBranchResponse.json();
+      console.error('GitHub API error details:', {
+        status: mainBranchResponse.status,
+        statusText: mainBranchResponse.statusText,
+        message: errorData.message
+      });
       throw new Error(`Failed to get main branch: ${errorData.message || mainBranchResponse.statusText}`);
     }
 
@@ -149,8 +164,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${GITHUB_TOKEN}`,
-            "Content-Type": "application/json",
+            'Accept': 'application/vnd.github.v3+json',
+            'Authorization': `token ${GITHUB_TOKEN}`,
+            'User-Agent': 'Blog-Post-Publisher',
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             ref: `refs/heads/${branchName}`,
@@ -161,6 +178,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
       if (!createBranchResponse.ok) {
         const errorData = await createBranchResponse.json();
+        console.error('GitHub API error details:', {
+          status: createBranchResponse.status,
+          statusText: createBranchResponse.statusText,
+          message: errorData.message
+        });
         throw new Error(`Failed to create branch: ${errorData.message || createBranchResponse.statusText}`);
       }
 
@@ -175,8 +197,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           {
             method: "PUT",
             headers: {
-              Authorization: `Bearer ${GITHUB_TOKEN}`,
-              "Content-Type": "application/json",
+              'Accept': 'application/vnd.github.v3+json',
+              'Authorization': `token ${GITHUB_TOKEN}`,
+              'User-Agent': 'Blog-Post-Publisher',
+              'Content-Type': 'application/json'
             },
             body: JSON.stringify({
               message: `Add new blog post: ${request.title}`,
@@ -188,6 +212,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         if (!createFileResponse.ok) {
           const errorData = await createFileResponse.json();
+          console.error('GitHub API error details:', {
+            status: createFileResponse.status,
+            statusText: createFileResponse.statusText,
+            message: errorData.message
+          });
           throw new Error(`Failed to create file: ${errorData.message || createFileResponse.statusText}`);
         }
 
@@ -200,8 +229,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${GITHUB_TOKEN}`,
-              "Content-Type": "application/json",
+              'Accept': 'application/vnd.github.v3+json',
+              'Authorization': `token ${GITHUB_TOKEN}`,
+              'User-Agent': 'Blog-Post-Publisher',
+              'Content-Type': 'application/json'
             },
             body: JSON.stringify({
               title: `Add blog post: ${request.title}`,
@@ -214,6 +245,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         if (!createPrResponse.ok) {
           const errorData = await createPrResponse.json();
+          console.error('GitHub API error details:', {
+            status: createPrResponse.status,
+            statusText: createPrResponse.statusText,
+            message: errorData.message
+          });
           throw new Error(`Failed to create PR: ${errorData.message || createPrResponse.statusText}`);
         }
 
